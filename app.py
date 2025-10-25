@@ -13,7 +13,7 @@ from google.oauth2.service_account import Credentials
 yesterday = datetime.now() - timedelta(days=1)
 date_str = yesterday.strftime('%Y-%m-%d')
 
-countries = ["Worldwide"]
+countries = ["EMEA","East Asia","Canada"]
 excluded_countries = [
     # Countries
     "United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel",
