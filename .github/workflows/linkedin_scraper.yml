@@ -26,7 +26,7 @@ jobs:
       # 🧩 Create Google Service Account JSON file from secret
       - name: Create credentials file
         run: |
-          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}" > linkedin.json
+          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT}}" > linkedin.json
 
       - name: Run LinkedIn scraper
         run: python app.py
