@@ -3,7 +3,7 @@ name: LinkedIn Job Scraper
 on:
   schedule:
     - cron: '0 4 * * *'  # Runs every day at 5 AM GMT+1 (4 AM UTC)
-  workflow_dispatch:  # Allows manual run from GitHub Actions tab
+  workflow_dispatch:    # Allows manual run
 
 jobs:
   scrape:
@@ -23,14 +23,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 🧩 Create the Google Service Account JSON file from GitHub Secrets
+      # 🧩 Create Google Service Account JSON file from secret
       - name: Create credentials file
         run: |
-          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT }}" > linkedin.json
+          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}" > linkedin.json
 
       - name: Run LinkedIn scraper
-        run: |
-          python app.py  
+        run: python app.py
 
       - name: Clean up credentials
         run: rm linkedin.json
