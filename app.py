@@ -127,7 +127,7 @@ async def main():
         print(f"\n🎯 Filtered jobs containing AI tools: {len(filtered_df)} / {len(df)}")
 
         # Step 4: update Google Sheets
-        SERVICE_ACCOUNT_FILE = 'linkedin.json'
+        SERVICE_ACCOUNT_FILE = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
         SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
         credentials = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         client = gspread.authorize(credentials)
