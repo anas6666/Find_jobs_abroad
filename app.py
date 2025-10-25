@@ -131,9 +131,9 @@ async def main():
         print(f"\n🎯 Filtered jobs containing AI tools: {len(filtered_df)} / {len(df)}")
 
         # Step 4: update Google Sheets
-        SERVICE_ACCOUNT_FILE = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
+        service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
         SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-        credentials = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        credentials = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
         client = gspread.authorize(credentials)
         sheet = client.open("LISTE OF JOBS").sheet1
         sheet.clear()
