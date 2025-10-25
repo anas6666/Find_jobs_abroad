@@ -40,7 +40,7 @@ keywords = [
     "HR AND AI", "HR AND Data", "Marketing", "Social Media", "GEO"
 ]
 
-filter_keywords = ["zapier", "make.com", "n8n", "Integromat", "Data", "python"]
+filter_keywords = ["zapier", "make.com", "n8n", "Integromat", "Data", "python", "GEO"]
 
 # --- Step 1 — Scrape job links ---
 links = []
