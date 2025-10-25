@@ -16,7 +16,8 @@ import os
 yesterday = datetime.now() - timedelta(days=1)
 date_str = yesterday.strftime('%Y-%m-%d')
 
-countries = ["EMEA", "East Asia", "Canada"]
+# countries = ["EMEA", "East Asia", "Canada"]
+countries = ["worldwide"]
 excluded_countries = [
     "United States", "USA", "India", "Pakistan", "Philippines", "Israel",
     "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
