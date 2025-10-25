@@ -30,7 +30,7 @@ jobs:
 
       - name: Run LinkedIn scraper
         run: |
-          python your_script_name.py  # <-- change this to your script’s filename
+          python app.py  
 
       - name: Clean up credentials
         run: rm linkedin.json
