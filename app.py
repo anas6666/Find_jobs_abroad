@@ -55,7 +55,7 @@ async def fetch(session: ClientSession, url: str):
 
 async def fetch_job_links(session: ClientSession, keyword: str, country: str):
     links = []
-    for i in range(0, 100):
+    for i in range(0, 1000):
         url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
         html = await fetch(session, url)
         if not html.strip():
