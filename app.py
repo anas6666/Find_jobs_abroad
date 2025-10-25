@@ -1,11 +1,16 @@
-%%time
-
 import time
 import requests
 from bs4 import BeautifulSoup
 import re
 import pandas as pd
 from datetime import datetime, timedelta
+import os
+import json
+import gspread
+from google.oauth2.service_account import Credentials
+import json
+import os
+
 
 yesterday = datetime.now() - timedelta(days=1)
 date_str = yesterday.strftime('%Y-%m-%d') # e.g. '2025-10-18'
