@@ -46,7 +46,7 @@ for city, ext in city_ext_map.items():
     job_links = []
 
     try:
-        for page in range(0, 1):  # only first page
+        for page in range(0, 10):  # only first page
             url = f'https://{ext}.indeed.com/jobs?q=&l={city}&radius=25&fromage=1&from=searchOnDesktopSerp&start={page * 10}'
             print(f"🌍 Page {page+1}: {url}")
             driver.get(url)
