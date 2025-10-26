@@ -12,18 +12,40 @@ from datetime import datetime, timedelta
 import gspread
 from google.oauth2.service_account import Credentials
 
-# --------------------------
-# 1️⃣ Setup Chrome (headless)
-# --------------------------
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("--window-size=1920,1080")
+import os
+import time
+import zipfile
+import mimetypes
+import requests
+from datetime import datetime 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import (
+    TimeoutException,
+    NoSuchElementException,
+    StaleElementReferenceException,
+    ElementClickInterceptedException
+)
+from selenium.webdriver.common.action_chains import ActionChains
 
-driver = webdriver.Chrome(options=chrome_options)
+service = Service("/usr/bin/chromedriver")
+# ------------------------
+# Selenium setup
+# ------------------------
+options = webdriver.ChromeOptions()
+options.add_argument("--headless=chrome")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--window-size=1920,1080")
+service = Service("/usr/bin/chromedriver")
+driver = webdriver.Chrome(service=service, options=options)
 
+
+#
 # --------------------------
 # 2️⃣ Setup cities and domains
 # --------------------------
