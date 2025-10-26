@@ -3,14 +3,14 @@ name: Indeed Job Scraper
 on:
   schedule:
     - cron: '0 4 * * *'  # Runs every day at 5 AM GMT+1 (4 AM UTC)
-  workflow_dispatch:     # Allows manual run
+  workflow_dispatch:
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repo
+      # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install selenium pandas gspread google-auth
 
-      # 4️⃣ Setup Chrome (latest)
+      # 4️⃣ Setup Chrome
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
@@ -34,13 +34,12 @@ jobs:
 
       # 5️⃣ Setup ChromeDriver (matching Chrome)
       - name: Setup ChromeDriver
-        uses: actions/setup-chromedriver@v2
+        uses: selenium-actions/setup-chromedriver@v1
         with:
           chromedriver-version: latest
 
-      # 6️⃣ Run your scraper
+      # 6️⃣ Run scraper
       - name: Run Indeed Scraper
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
-        run: |
-          python app2.py
+        run: python app2.py
