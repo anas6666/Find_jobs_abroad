@@ -31,3 +31,4 @@ jobs:
         run: python app.py
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          SPREADSHEET_URL: ${{ secrets.SPREADSHEET_URL }}
