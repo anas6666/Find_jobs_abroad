@@ -35,7 +35,7 @@ api_url_job = []
 
 for country in countries:
     for keyword in keywords:  # ✅ search each keyword separately
-        for i in range(0, 2):  # Increase range for more pages
+        for i in range(0, 10):  # Increase range for more pages
             url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
             headers = {"User-Agent": "Mozilla/5.0"}
             
@@ -102,6 +102,8 @@ for link, searched_keyword in links:
 
 # Step 3 — Create DataFrame
 df = pd.DataFrame(data)
+df = df.drop_duplicates(subset=['link']).reset_index(drop=True)
+
 
 # Step 4 — Optional filtering: keep only jobs containing filter keywords
 filtered_df = df[df['found_filter_keywords'] != ""]
