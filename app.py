@@ -120,7 +120,7 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapi
 credentials = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
 client = gspread.authorize(credentials)
 
-SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1hF8Q-yPVCdoyOHzDqeFn5kBjCLk9AgvOH-mSDOtyNDI/edit'
+SPREADSHEET_URL = os.environ["SPREADSHEET_URL"]
 WORKSHEET_NAME = 'Linkedin Worldwide'
 
 try:
