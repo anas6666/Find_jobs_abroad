@@ -111,15 +111,24 @@ print(f"Filtered jobs: {len(filtered_df)}")
 # Show result
 
 
-
 # Step 3: Update Google Sheets
+
 service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 credentials = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
 client = gspread.authorize(credentials)
-sheet = client.open("LISTE OF JOBS").sheet1
+
+SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1hF8Q-yPVCdoyOHzDqeFn5kBjCLk9AgvOH-mSDOtyNDI/edit'
+WORKSHEET_NAME = 'Linkedin Worldwide'
+
+try:
+    sheet = client.open_by_url(SPREADSHEET_URL).worksheet(WORKSHEET_NAME)
+except gspread.WorksheetNotFound:
+    sheet = client.open_by_url(SPREADSHEET_URL).add_worksheet(title=WORKSHEET_NAME, rows="1000", cols="20")
+
 sheet.clear()
-sheet.update([filtered_df.columns.values.tolist()] + filtered_df.values.tolist())
+sheet.update([df.columns.values.tolist()] + df.values.tolist())
+
 print("\n✅ Data successfully updated in Google Sheets!")
 
 
