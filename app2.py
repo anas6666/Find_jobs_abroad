@@ -111,11 +111,23 @@ for city, ext in city_ext_map.items():
 # ------------------------
 # Wrap up
 # ------------------------
+# ------------------------
+# Wrap up
+# ------------------------
 driver.quit()
 df = pd.DataFrame(job_data).drop_duplicates(subset=['Link']).reset_index(drop=True)
 
-# Filter by keywords
-keywords = ['n8n', 'Zapier', 'make.com', 'Integromat','data','GEO']
+# Ensure 'Description' column exists and fill missing with 'N/A'
+if 'Description' not in df.columns:
+    df['Description'] = 'N/A'
+else:
+    df['Description'] = df['Description'].fillna('N/A')
+
+# ------------------------
+# Keyword filtering
+# ------------------------
+keywords = ['n8n', 'Zapier', 'make.com', 'Integromat', 'data', 'GEO']
+
 def get_matching_keywords(desc, keywords):
     desc_lower = str(desc).lower()
     matches = [kw for kw in keywords if kw.lower() in desc_lower]
@@ -123,10 +135,10 @@ def get_matching_keywords(desc, keywords):
 
 df['Matched_Keywords'] = df['Description'].apply(lambda x: get_matching_keywords(x, keywords))
 df = df[df['Matched_Keywords'].notnull()].reset_index(drop=True)
-df = df.drop(columns=['Description'])
+df = df.drop(columns=['Description'], errors='ignore')
 
 # ------------------------
-# Google Sheets setup
+# Google Sheets upload
 # ------------------------
 service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -146,3 +158,4 @@ if not df.empty:
     sheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 print(f"\n✅ Google Sheet updated with {len(df)} jobs!")
+
