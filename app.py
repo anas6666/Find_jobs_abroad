@@ -125,8 +125,13 @@ try:
 except gspread.WorksheetNotFound:
     sheet = client.open_by_url(SPREADSHEET_URL).add_worksheet(title=WORKSHEET_NAME, rows="1000", cols="20")
 
+print("Rows to upload:", len(filtered_df))
+
 sheet.clear()
-sheet.update([df.columns.values.tolist()] + df.values.tolist())
+sheet.update(
+    [filtered_df.columns.values.tolist()] +
+    filtered_df.values.tolist()
+)
 
 print("\n✅ Data successfully updated in Google Sheets!")
 
