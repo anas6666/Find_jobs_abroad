@@ -16,10 +16,7 @@ yesterday = datetime.now() - timedelta(days=1)
 date_str = yesterday.strftime('%Y-%m-%d') # e.g. '2025-10-18'
 
 # Step 0 — Setup
-countries = ["Morocco","South Africa","Mauritius","Middle East", "East Asia", "Thailand" "Singapore","Oceania","Canada",
-            "Portugal", "Estonia", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus","Luxembourg",
-             "Iceland","Greenland","Nordics", "European Economic Area"
-            ]
+countries = ["Morocco"]
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
 
 keywords = [
@@ -38,7 +35,7 @@ api_url_job = []
 
 for country in countries:
     for keyword in keywords:  # ✅ search each keyword separately
-        for i in range(0, 10):  # Increase range for more pages
+        for i in range(0, 2):  # Increase range for more pages
             url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
             headers = {"User-Agent": "Mozilla/5.0"}
             
