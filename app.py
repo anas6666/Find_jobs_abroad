@@ -16,7 +16,10 @@ yesterday = datetime.now() - timedelta(days=1)
 date_str = yesterday.strftime('%Y-%m-%d') # e.g. '2025-10-18'
 
 # Step 0 — Setup
-countries = ["Morocco"]
+countries = ["Morocco","South Africa","Mauritius","Middle East", "East Asia", "Thailand" "Singapore","Oceania","Canada",
+            "Portugal", "Estonia", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus","Luxembourg",
+             "Iceland","Greenland","Nordics", "European Economic Area"
+            ]
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
 
 keywords = [
