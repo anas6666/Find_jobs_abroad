@@ -92,8 +92,7 @@ for link, searched_keyword in links:
             "company": company,
             "country": country,
             "link": link,
-            "searched_keyword": searched_keyword,  
-            "found_filter_keywords": found_keywords_str  
+            "searched_keyword": searched_keyword
         })
 
     except Exception as e:
@@ -103,11 +102,6 @@ for link, searched_keyword in links:
 df = pd.DataFrame(data)
 df = df.drop_duplicates(subset=['link']).reset_index(drop=True)
 
-
-# Step 4 — Optional filtering: keep only jobs containing filter keywords
-filtered_df = df[df['found_filter_keywords'] != ""]
-
-print(f"Filtered jobs: {len(filtered_df)}")
 
 # Show result
 
