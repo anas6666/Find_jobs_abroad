@@ -83,8 +83,8 @@ for link, searched_keyword in links:
             continue
 
         # ✅ Find which filter keywords appear in the description
-        found_keywords = [k for k in filter_keywords if re.search(rf'\b{k}\b', desc, flags=re.IGNORECASE)]
-        found_keywords_str = ", ".join(found_keywords) if found_keywords else ""
+        #found_keywords = [k for k in filter_keywords if re.search(rf'\b{k}\b', desc, flags=re.IGNORECASE)]
+        #found_keywords_str = ", ".join(found_keywords) if found_keywords else ""
 
         data.append({
             "Date" : date_str,
