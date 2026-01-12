@@ -38,7 +38,7 @@ api_url_job = []
 
 for country in countries:
     for keyword in keywords:  # ✅ search each keyword separately
-        for i in range(0, 20):  # Increase range for more pages
+        for i in range(0, 10):  # Increase range for more pages
             url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
             headers = {"User-Agent": "Mozilla/5.0"}
             
