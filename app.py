@@ -26,7 +26,7 @@ keywords = [
     "AI", "IA", "ai automation", "prompt", "workflow","automatisation", "automation",
     "foreigner", "foreign", "relocation", "sponsorship", "work permit", "abroad",
     "no code", "low code", "no-code", "low-code","nocode", "Data", "RPA", "n8n","llm",
-    "HR AND AI", "HR AND Data", "Marketing", "Social Media", "GEO", "SEO"
+    "GTM", "Marketing", "Social Media", "GEO", "SEO"
 ]
 
 # Keywords to detect inside descriptions
