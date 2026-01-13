@@ -30,7 +30,7 @@ keywords = [
 ]
 
 # Keywords to detect inside descriptions
-filter_keywords = ["zapier", "make.com", "n8n", "Integromat", "Data", "python","Uipath", "automation anywhere", "power apps", "power automate", "Mendix", "rpa","GEO"]
+filter_keywords = ["zapier", "make.com", "n8n", "Integromat", "python", "rpa","GEO", "Uipath", "automation anywhere", "power apps", "power automate", "Mendix"]
 
 # Step 1 — Scrape job links
 links = []
@@ -107,16 +107,16 @@ for link, searched_keyword in links:
 df = pd.DataFrame(data)
 df = df.drop_duplicates(subset=['link']).reset_index(drop=True)
 
-
 # Step 4 — Optional filtering: keep only jobs containing filter keywords
 filtered_df = df[df['found_filter_keywords'] != ""]
 
-print(f"Filtered jobs: {len(filtered_df)}")
+# 🔁 Strategy 3: final deduplication before sending
+filtered_df = filtered_df.drop_duplicates(subset=['link']).reset_index(drop=True)
 
-# Show result
+print(f"Filtered jobs (unique): {len(filtered_df)}")
 
 
-# Step 3: Update Google Sheets
+# Step 5: Update Google Sheets
 
 service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
