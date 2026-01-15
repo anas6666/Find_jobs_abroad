@@ -246,7 +246,7 @@ try:
 except gspread.WorksheetNotFound:
     sheet_count_skills = client.open_by_url(SPREADSHEET_URL).add_worksheet(title=WORKSHEET_NAME_COUNT_SKILLS, rows="1000", cols="20")
 
-print(f"\nUpdating '{WORKSHEART_NAME_COUNT_SKILLS}' sheet...")
+print(f"\nUpdating '{WORKSHEET_NAME_COUNT_SKILLS}' sheet...")
 
 # Get existing data from the sheet to append
 existing_data = sheet_count_skills.get_all_values()
