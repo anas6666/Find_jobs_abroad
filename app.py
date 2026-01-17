@@ -28,7 +28,7 @@ keywords_for_scraping = [ # Keywords used to search on LinkedIn
 
 # Keywords for the "Linkedin Worldwide" sheet filter
 linkedin_worldwide_filter_keywords = [
-    "n8n", "zapier", "make.com", "integromat", "data", "python"
+    "n8n", "zapier", "make.com", "integromat"
 ]
 
 # --- Define Skill Categories and Skills within them ---
