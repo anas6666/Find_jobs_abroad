@@ -15,7 +15,7 @@ today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for coun
 
 countries = ["Morocco","South Africa","Mauritius","Middle East", "East Asia", "Thailand", "Singapore","Oceania","Canada",
             "Portugal", "Estonia", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus","Luxembourg",
-             "Iceland","Greenland","Nordics", "European Economic Area"
+             "Iceland","Greenland","Switzerland","Estonia","Denmark","Finland","Sweden","Norway", "European Economic Area"
             ]
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
 
