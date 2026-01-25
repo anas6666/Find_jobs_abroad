@@ -13,7 +13,9 @@ from google.oauth2.service_account import Credentials
 yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
-countries = ["Morocco","South Africa","Mauritius","Middle East", "East Asia", "Thailand", "Singapore","Oceania","Canada",
+countries = ["Morocco","South Africa","Mauritius","Seychelles",
+             "Qatar","Oman","Kuwait","Bahrain","Saudi Arabia","United Arab Emirates","Jordan",
+             "Japan", "South Korea","Hong Kong SAR", "Singapore","Australia","New Zealand","Canada",
             "Portugal", "Estonia", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus","Luxembourg",
              "Iceland","Greenland","Switzerland","Estonia","Denmark","Finland","Sweden","Norway", "European Economic Area"
             ]
