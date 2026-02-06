@@ -1,5 +1,8 @@
 import time
+import random
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 import re
 import pandas as pd
@@ -12,6 +15,37 @@ from google.oauth2.service_account import Credentials
 # --- Configuration ---
 yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
+
+def create_safe_session():
+    session = requests.Session()
+
+    retry = Retry(
+        total=5,
+        backoff_factor=2,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"]
+    )
+
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    return session
+
+session = create_safe_session()
+
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+    "Mozilla/5.0 (X11; Linux x86_64)"
+]
+
+def get_headers():
+    return {
+        "User-Agent": random.choice(USER_AGENTS),
+        "Accept-Language": "en-US,en;q=0.9"
+    }
+
 
 countries = ["Morocco","South Africa","Mauritius","Seychelles",
              "Qatar","Oman","Kuwait","Bahrain","Saudi Arabia","United Arab Emirates","Jordan",
@@ -115,52 +149,70 @@ api_url_job = []
 
 for country in countries:
     for keyword in keywords_for_scraping:
-        for i in range(0, 2):  # Increase range for more pages
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
-            headers = {"User-Agent": "Mozilla/5.0"}
+        for i in range(0, 2):
+            url = (
+                "https://www.linkedin.com/jobs-guest/jobs/api/"
+                f"seeMoreJobPostings/search?keywords={keyword}"
+                f"&location={country}&f_TPR=r86400&start={i*25}"
+            )
 
-            time.sleep(1)
-            response = requests.get(url, headers=headers)
-            soup = BeautifulSoup(response.text, "html.parser")
+            time.sleep(random.uniform(2.5, 5.5))
 
-            job_links = soup.find_all("a", class_="base-card__full-link")
+            try:
+                response = session.get(
+                    url,
+                    headers=get_headers(),
+                    timeout=15
+                )
 
-            for job in job_links:
-                job_url = job.get("href")
-                if job_url and job_url not in [link[0] for link in links]: # Check if URL (first element of tuple) is already present
-                    links.append((job_url, keyword))
-                    match = re.search(r'-([0-9]+)\?', job_url)
-                    if match:
-                        job_id = match.group(1)
-                        api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
-                        api_url_job.append(api_link)
+                soup = BeautifulSoup(response.text, "html.parser")
+                job_links = soup.find_all("a", class_="base-card__full-link")
 
-print(f"Total unique job links found: {len(links)}")
+                for job in job_links:
+                    job_url = job.get("href")
+                    if job_url and job_url not in [l[0] for l in links]:
+                        links.append((job_url, keyword))
+
+            except requests.exceptions.SSLError:
+                print(f"⚠️ SSL blocked – skipping {country} / {keyword}")
+                time.sleep(10)
+                continue
+
+            except requests.exceptions.RequestException as e:
+                print(f"⚠️ Request error: {e}")
+                time.sleep(5)
+                continue
+
+print(f"✅ Total unique job links found: {len(links)}")
 
 # --- Step 2 — Scrape job details ---
-all_job_data = [] # Stores all scraped job details before filtering
-headers = {"User-Agent": "Mozilla/5.0"}
+all_job_data = []
 
 for link, searched_keyword in links:
+    time.sleep(random.uniform(2.5, 5.5))
+
     try:
-        time.sleep(1)
-        response = requests.get(link, headers=headers)
+        response = session.get(
+            link,
+            headers=get_headers(),
+            timeout=15
+        )
+
         soup = BeautifulSoup(response.text, "html.parser")
 
-        title_tag = soup.find('h1', class_='top-card-layout__title') or soup.find('h2', class_='top-card-layout__title')
-        title = title_tag.text.strip() if title_tag else "Not Found"
+        title = soup.find("h1")
+        title = title.text.strip() if title else "Not Found"
 
-        company_tag = soup.find('a', class_='topcard__org-name-link')
-        company = company_tag.text.strip() if company_tag else "Not Found"
+        company = soup.find("a", class_="topcard__org-name-link")
+        company = company.text.strip() if company else "Not Found"
 
-        country_tag = soup.find('span', class_='topcard__flavor--bullet')
-        country = country_tag.text.strip() if country_tag else "Not Found"
+        country = soup.find("span", class_="topcard__flavor--bullet")
+        country = country.text.strip() if country else "Not Found"
 
-        desc_tag = soup.find('div', class_='description__text--rich')
-        desc = desc_tag.text.strip() if desc_tag else "Not Found"
+        desc = soup.find("div", class_="description__text--rich")
+        desc = desc.text.strip() if desc else ""
 
-        # Skip excluded countries
-        if any(excluded.lower() in country.lower() for excluded in excluded_countries):
+        if any(excl.lower() in country.lower() for excl in excluded_countries):
             continue
 
         all_job_data.append({
@@ -170,11 +222,17 @@ for link, searched_keyword in links:
             "country": country,
             "link": link,
             "searched_keyword": searched_keyword,
-            "description": desc # Keep description for skill counting later
+            "description": desc
         })
 
+    except requests.exceptions.SSLError:
+        print(f"⚠️ SSL blocked on job page – skipped")
+        continue
+
     except Exception as e:
-        print(f"Error scraping {link}: {e}")
+        print(f"⚠️ Error scraping job: {e}")
+        continue
+
 
 # --- Step 3 — Create DataFrame from all scraped data ---
 df_all_jobs = pd.DataFrame(all_job_data)
