@@ -21,7 +21,7 @@ excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan"
 
 keywords = [
     "RH", "HR", "Recrutement","Recruitment", "Assistant", "Assistante","Assistant(e)",
-    "courier", "coursier", "chauffeur","comptable"
+    "courier", "coursier", "chauffeur","comptable","stage","tourisme","tourist"
 
 ]
 
