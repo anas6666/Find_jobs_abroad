@@ -40,61 +40,138 @@ skill_categories = {
     "Data Analyst": [
         "VBA","power query","DAX","power bi","tableau",
         "data visualization", "reporting","data analysis","web scraping",
-        "looker", "qlik"
+        "looker", "qlik",
+        # New trending skills
+        "Power Automate Desktop","Google Looker Studio","Apache Superset",
+        "Data storytelling","ObservableHQ","ThoughtSpot","Microsoft Fabric",
+        "Python Dash","Streamlit Components","BI embedded analytics",
+        "AI-powered dashboards","Real-time analytics","Causal inference",
+        "Bayesian modeling","Advanced Excel functions","Snowflake Data Sharing",
+        "DBT for analytics","Data quality monitoring","Dataprep/ETL automation",
+        "Analytics for generative AI insights"
     ],
     "Data Engineer": [
         "etl", "airflow", "dbt", "spark", "kafka", "hadoop", "snowflake", "databricks", "redshift", "bigquery",
-        "batch processing", "stream processing", "data modeling", "data pipelines"
+        "batch processing", "stream processing", "data modeling", "data pipelines",
+        # New trending skills
+        "Delta Lake","Apache Iceberg","Feast Feature Store","Prefect","Dagster",
+        "Flink SQL","Event-driven pipelines","Data mesh patterns","Lakehouse architecture",
+        "StreamSets","MLflow for pipelines","Cloud-native ETL (GCP/AWS/Azure)","PolyBase",
+        "Data observability","Airbyte","OpenLineage","Temporal workflows","Graph pipelines",
+        "Real-time CDC (Change Data Capture)","Cloud Data Catalogs"
     ],
     "Data Scientist": [
         "data science", "machine learning", "predictive modeling", "model evaluation",
         "statistics", "nlp", "computer vision","ML", "deep learning", "dl",
         "scikit-learn", "tensorflow", "pytorch", "keras", "xgboost", "lightgbm",
-        "time series", "a/b testing"
+        "time series", "a/b testing",
+        # New trending skills
+        "Hugging Face PEFT","AutoML frameworks","MLOps for LLMs","Few-shot learning",
+        "Reinforcement learning","Diffusion models","Graph neural networks",
+        "Deep reinforcement learning","Model interpretability","Synthetic data generation",
+        "TinyML","Generative design","Edge AI","NLP embeddings","Transfer learning pipelines",
+        "Prompt engineering patterns","Active learning loops","Multimodal AI",
+        "Foundation model fine-tuning","AI-assisted feature engineering"
     ],
-            
     "AI/ML Engineer": [
         "artificial intelligence", "ai", "llm", "large language models", "prompt",
         "fine-tuning","fine tuning", "rag","generative ai", "genai", "gen ai",
         "retrieval augmented generation", "hugging face", "openai", "gemini",
         "deepseek", "claude", "transformers", "bert", "llama","ollama",
-        "vector databases", "mlops"
+        "vector databases", "mlops",
+        # New trending skills
+        "Claude AI integrations","Gemini API ","LangChain pipelines",
+        "Ollama LLMs","RAG pipelines for LLMs","LLMOps","Vector similarity search",
+        "Chatbot fine-tuning","Generative AI safety alignment","Multi-agent AI systems",
+        "Self-hosted LLM deployment","Transformer efficiency optimization","Prompt chaining",
+        "LLM evaluation metrics","Knowledge graph + LLM integration",
+        "Retrieval augmented summarization","Custom embeddings for domain knowledge",
+        "Hybrid LLM models","AI model governance"
     ],
-            
     "AI Automation/RPA/No-Code": [
         "n8n", "zapier", "make.com", "integromat", "uipath", "power automate",
-        "power apps", "mendix", "automation anywhere", "rpa", "appian"
+        "power apps", "mendix", "automation anywhere", "rpa", "appian",
+        # New trending skills
+        "claude code","claude cowork","replit","lovable","bolt,"bubble","AI workflow orchestration",
+        "LLM-powered automation","Robocorp","Automation Anywhere Cloud RPA","Botpress integration",
+        "Slack + AI automation","Zapier AI Actions","Webflow AI integration",
+        "Microsoft Power Automate AI Builder","Low-code AI apps","No-code API connectors",
+        "Event-triggered workflows","AI email automation","Chatbot automation",
+        "Intelligent document processing","Cloud RPA deployment","AI-powered monitoring",
+        "Multi-step cross-platform automation"
     ],
-            
     "Programming Languages": [
         "python", "javascript", "go", "java", "c#", "scala",
         "kotlin", "swift", "php", "ruby", "rust", "HTML", "CSS", "sql","nosql",
-        "typescript", "bash", "shell scripting", "R"
+        "typescript", "bash", "shell scripting", "R",
+        # New trending skills
+        "Julia","Nim","Zig","Crystal","Deno","Svelte","SolidJS",
+        "Rust for WebAssembly","Web3 Solidity","Cairo (StarkNet)","Kotlin Multiplatform",
+        "Python 3.12 features","TypeScript decorators","GPT-assisted coding tools",
+        "Go generics","Elixir/Phoenix","R for ML pipelines","Swift for AI apps",
+        "WASM-focused JS frameworks","DSLs for AI pipelines"
     ],
     "DevOps": [
         "docker", "kubernetes", "ci/cd", "github actions", "gitlab ci/cd", "jenkins",
-        "terraform", "ansible", "helm", "prometheus", "grafana", "git"
-                
+        "terraform", "ansible", "helm", "prometheus", "grafana", "git",
+        # New trending skills
+        "FluxCD","ArgoCD","Tekton pipelines","Crossplane","OpenTelemetry",
+        "Backstage.io","Kubernetes Operators","KEDA","GitOps for ML","HashiCorp Boundary",
+        "Infrastructure testing frameworks","Cloud-native secrets management","Service Mesh (Istio/Linkerd)",
+        "Cross-cloud CI/CD","SRE monitoring patterns","Chaos engineering tools","Jenkins X",
+        "Podman","Envoy proxy configs","Terraform Cloud advanced features"
     ],
     "Cloud Platforms": [
-        "aws", "azure", "gcp"
+        "aws", "azure", "gcp",
+        # New trending skills
+        "AWS Bedrock","Azure OpenAI Service","GCP Vertex AI","Cloud Run for AI apps",
+        "Serverless AI pipelines","Cloud-native vector DB","Multi-cloud AI deployments",
+        "Cloud cost optimization AI tools","Cloud ML pipelines","Edge AI services",
+        "Cloud AI monitoring","Cloud LLM deployment","Cloud security automation",
+        "Cloud observability stacks","AI feature stores","Cloud data mesh",
+        "Cloud workflow orchestration","SaaS AI integration","Hybrid cloud setups",
+        "Cloud event-driven architectures"
     ],
-            
     "Databases": [
-        "postgresql", "mysql", "mongodb", "redis", "cassandra","sqlite"
+        "postgresql", "mysql", "mongodb", "redis", "cassandra","sqlite",
+        # New trending skills
+        "Neo4j","Amazon QLDB","CockroachDB","YugabyteDB","TimescaleDB",
+        "DynamoDB advanced queries","RedisJSON + RedisSearch","SurrealDB","TigerGraph",
+        "SingleStore","Vector DBs (Weaviate, Pinecone)","FaunaDB","Atlas Search (Mongo)",
+        "Edge databases","Multi-model DBs","Graph + SQL hybrid DBs","Cloud-native DB replication",
+        "Serverless DB patterns","Temporal DBs","Event-sourced databases"
     ],
-            
     "Frontend/UI/UX": [
-        "react", "angular", "vue.js", "canva", "figma", "adobe"
+        "react", "angular", "vue.js", "canva", "figma", "adobe",
+        # New trending skills
+        "SvelteKit","SolidJS","TailwindCSS advanced","Framer Motion animations",
+        "Figma Plugins for AI design","Web3 frontends","Astro","3D web interactions (Three.js)",
+        "WebGL for interactive visuals","AI-assisted design systems","Headless CMS integrations",
+        "Micro-frontends","Component libraries (Radix/UI)","Motion design patterns",
+        "Accessibility-first design","AI UX analytics","Progressive Web Apps","No-code frontend builders",
+        "UI state machines","Design tokens automation"
     ],
-            
     "Backend/API Development": [
         "rest api", "graphql","node.js", "express.js",
-        "spring boot", "django", "flask", "fastapi", "asp.net"
+        "spring boot", "django", "flask", "fastapi", "asp.net",
+        # New trending skills
+        "FastAPI advanced","NestJS","tRPC","Supabase backend","Serverless functions",
+        "WebSockets real-time apps","gRPC services","Rust backend APIs","Deno backend",
+        "API versioning patterns","OAuth 2.1 integrations","Event-driven backends",
+        "Kafka streams API","GraphQL federation","PostgREST APIs","AI API endpoints",
+        "Edge functions","Cloud-native API gateways","Async Python backends",
+        "Domain-driven backend design"
     ],
-            
     "Project/Product Management": [
-        "agile", "scrum", "jira"
+        "agile", "scrum", "jira",
+        # New trending skills
+        "AI product roadmapping","OKRs tracking","Jira Advanced Automations",
+        "Notion project workflows","ClickUp AI automations","Linear app workflows",
+        "Stakeholder AI dashboards","AI-assisted backlog grooming","Product analytics integration",
+        "Figma + Jira design handoff","Data-driven project KPIs","Risk AI predictions",
+        "Agile for AI teams","Scrum@Scale","Kanban digital boards","OKR alignment software",
+        "DevOps project tracking","Workflow process mining","Hybrid project frameworks",
+        "AI product experimentation frameworks"
     ]
 }
 
