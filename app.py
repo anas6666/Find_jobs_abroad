@@ -168,14 +168,34 @@ skill_categories = {
     # ─────────────────────────────────────────────
     "Business Intelligence & Strategy": [
         "market research", "competitive analysis", "strategic planning",
-        "business case writing", "ROI modeling",
-        "data-driven decision making", "executive reporting",
-        "ESG reporting", "KPI frameworks",
-        "veille stratégique", "tender analysis (AO)",
-        "Lean Six Sigma", "process optimization",
-        "ISO standards", "QHSE management", "CSR/ESG strategy",
+        "business case writing", "ROI",
+        "decision making", "reporting","KPI",
+        "veille stratégique",
+        "Lean Six Sigma", "HSE",
+        "ISO", "QHSE", "ESG",
     ],
+
+  "Ads / Growth Marketing": [
+    # Platforms
+    "Google Ads", "Meta Ads", "Facebook Ads", "Instagram Ads", "TikTok Ads", "LinkedIn Ads",
+    "Chatgpt ads",
+
+    # Tracking & Analytics
+    "Google Tag Manager", "GTM", "Conversion Tracking", "Pixel tracking",
+    "Google Analytics 4", "GA4"
+  ],
+
+  "ERP Systems": [
+    # Major ERP Platforms
+    "SAP", "Salesforce", "Oracle ERP",
+    "Microsoft Dynamics", "Dynamics 365", "Odoo", "NetSuite",
+    "Salesforce", "HubSpot","Zoho", "monday CRM",
+    "Pipedrive", "Freshsales",
+  ],
+
+  
 }
+
 
 # Consolidate all skills into a single list for scraping and create a skill-to-tag map
 count_skills_keywords = []
