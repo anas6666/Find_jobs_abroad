@@ -99,7 +99,8 @@ skill_categories = {
     ],
     "DevOps": [
         "docker", "kubernetes", "ci/cd", "github actions", "jenkins",
-        "terraform", "ansible", "helm", "prometheus", "grafana", "git",
+        "terraform", "ansible", "helm", "prometheus", "grafana", "git"
+    ],
 
   
     "Cloud Platforms": [
