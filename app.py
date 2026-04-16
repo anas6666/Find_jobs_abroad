@@ -13,7 +13,7 @@ from google.oauth2.service_account import Credentials
 yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
-countries = ["Morocco","South Africa","Mauritius","Seychelles",
+keywords_for_scraping = ["Morocco","South Africa","Mauritius","Seychelles",
              "Qatar","Oman","Kuwait","Bahrain","Saudi Arabia","United Arab Emirates","Jordan",
              "Japan", "South Korea","Hong Kong SAR", "Singapore","Australia","New Zealand",
              "Turkey","Bosnia and Herzegovina","Georgia","Albania","Ukraine","Russia","Canada",
@@ -21,13 +21,6 @@ countries = ["Morocco","South Africa","Mauritius","Seychelles",
              "Iceland","Greenland","Switzerland","Estonia","Denmark","Finland","Sweden","Norway", "European Economic Area"
             ]
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
-
-keywords_for_scraping = [ # Keywords used to search on LinkedIn
-    "AI", "IA", "ai automation", "prompt", "workflow","automatisation", "automation",
-    "foreigner", "foreign", "relocation", "sponsorship", "work permit", "abroad",
-    "no code", "low code", "no-code", "low-code","nocode", "Data", "RPA", "n8n","llm",
-    "GTM", "Marketing", "Social Media", "GEO", "SEO"
-]
 
 # Keywords for the "Linkedin Worldwide" sheet filter
 linkedin_worldwide_filter_keywords = [
@@ -212,27 +205,26 @@ count_skills_keywords = list(set(count_skills_keywords))
 links = []
 api_url_job = []
 
-for country in countries:
-    for keyword in keywords_for_scraping:
-        for i in range(0, 2):  # Increase range for more pages
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
-            headers = {"User-Agent": "Mozilla/5.0"}
+for keyword in keywords_for_scraping:
+    for i in range(0, 2):  # Increase range for more pages
+        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={keyword}&f_TPR=r86400&start={i*25}"
+        headers = {"User-Agent": "Mozilla/5.0"}
 
-            time.sleep(1)
-            response = requests.get(url, headers=headers)
-            soup = BeautifulSoup(response.text, "html.parser")
+        time.sleep(1)
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.text, "html.parser")
 
-            job_links = soup.find_all("a", class_="base-card__full-link")
+        job_links = soup.find_all("a", class_="base-card__full-link")
 
-            for job in job_links:
-                job_url = job.get("href")
-                if job_url and job_url not in [link[0] for link in links]: # Check if URL (first element of tuple) is already present
-                    links.append((job_url, keyword))
-                    match = re.search(r'-([0-9]+)\?', job_url)
-                    if match:
-                        job_id = match.group(1)
-                        api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
-                        api_url_job.append(api_link)
+        for job in job_links:
+            job_url = job.get("href")
+            if job_url and job_url not in [link[0] for link in links]: # Check if URL (first element of tuple) is already present
+                links.append((job_url, keyword))
+                match = re.search(r'-([0-9]+)\?', job_url)
+                if match:
+                    job_id = match.group(1)
+                    api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
+                    api_url_job.append(api_link)
 
 print(f"Total unique job links found: {len(links)}")
 
