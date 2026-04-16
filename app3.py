@@ -16,7 +16,6 @@ yesterday = datetime.now() - timedelta(days=1)
 date_str = yesterday.strftime('%Y-%m-%d') # e.g. '2025-10-18'
 
 # Step 0 — Setup
-countries = ["Morocco"]
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
 
 keywords = [
@@ -32,27 +31,26 @@ keywords = [
 links = []
 api_url_job = []
 
-for country in countries:
-    for keyword in keywords:  # ✅ search each keyword separately
-        for i in range(0, 20):  # Increase range for more pages
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
-            headers = {"User-Agent": "Mozilla/5.0"}
-            
-            time.sleep(1)
-            response = requests.get(url, headers=headers)
-            soup = BeautifulSoup(response.text, "html.parser")
+for keyword in keywords:  # ✅ search each keyword separately
+    for i in range(0, 20):  # Increase range for more pages
+        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location=Rabat%2C%20Rabat-Sal%C3%A9-K%C3%A9nitra%2C%20Morocco&geoId=107116391&f_TPR=r86400&start={i*25}"
+        headers = {"User-Agent": "Mozilla/5.0"}
+        
+        time.sleep(1)
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.text, "html.parser")
 
-            job_links = soup.find_all("a", class_="base-card__full-link")
+        job_links = soup.find_all("a", class_="base-card__full-link")
 
-            for job in job_links:
-                job_url = job.get("href")
-                if job_url and job_url not in links:
-                    links.append((job_url, keyword))  # ✅ Store URL + searched keyword
-                    match = re.search(r'-([0-9]+)\?', job_url)
-                    if match:
-                        job_id = match.group(1)
-                        api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
-                        api_url_job.append(api_link)
+        for job in job_links:
+            job_url = job.get("href")
+            if job_url and job_url not in links:
+                links.append((job_url, keyword))  # ✅ Store URL + searched keyword
+                match = re.search(r'-([0-9]+)\?', job_url)
+                if match:
+                    job_id = match.group(1)
+                    api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
+                    api_url_job.append(api_link)
 
 print(f"Total job links found: {len(links)}")
 
