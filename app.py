@@ -206,7 +206,7 @@ links = []
 api_url_job = []
 
 for keyword in keywords_for_scraping:
-    for i in range(0, 2):  # Increase range for more pages
+    for i in range(0, 30):  # Increase range for more pages
         url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={keyword}&f_TPR=r86400&start={i*25}"
         headers = {"User-Agent": "Mozilla/5.0"}
 
