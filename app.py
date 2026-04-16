@@ -67,7 +67,7 @@ skill_categories = {
         "Foundation model fine-tuning","AI-assisted feature engineering"
     ],
     "AI/ML Engineer": [
-        "artificial intelligence", "ai", "llm", "large language models", "prompt engineering",'context engineering'
+        "artificial intelligence", "ai", "llm", "large language models", "prompt engineering",'context engineering',
         "fine-tuning","fine tuning", "rag","generative ai", "genai", "gen ai",
         "retrieval augmented generation", "hugging face", "openai", "gemini",
         "deepseek", "claude", "transformers", "bert", "llama","ollama",
