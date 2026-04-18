@@ -18,7 +18,7 @@ countries = ["Morocco","South Africa","Mauritius","Seychelles",
              "Japan", "South Korea","Hong Kong SAR", "Singapore","Australia","New Zealand",
              "Turkey","Bosnia and Herzegovina","Albania","Ukraine","Russia","Canada",
             "Portugal", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus","Luxembourg",
-             "Iceland","Greenland","Switzerland","Estonia","Denmark","Finland","Sweden","Norway", "Ireland","European Economic Area"
+             "Iceland","Greenland","Switzerland","Estonia","Denmark","Finland","Sweden","Norway", "Ireland","European Economic Area","Dach"
             ]
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
 
