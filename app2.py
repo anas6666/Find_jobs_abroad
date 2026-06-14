@@ -25,7 +25,7 @@ options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) Apple
 
 driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
-# ------------------------
+# -------------------------
 # Cities and domains
 # ------------------------
 cities = ["Auckland", "Australia", "Austria","Bahrain","Canada","Czech Republic","Denmark",
