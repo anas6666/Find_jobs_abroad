@@ -9,7 +9,7 @@ import json
 import gspread
 from google.oauth2.service_account import Credentials
 
-# --- Configuration ---
+# --- Configuration ----
 yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
