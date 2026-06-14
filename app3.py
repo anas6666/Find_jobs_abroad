@@ -19,7 +19,7 @@ date_str = yesterday.strftime('%Y-%m-%d') # e.g. '2025-10-18'
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan","Philippines","Israel","Vietnam"]
 
 keywords = [
-    "RH", "HR", "Recrutement","Recruitment", "Assistant", "Assistante","Assistant(e)",
+    "RH", "HR", "Recrutement","Recruitment", "Assistant", "Assistante","Assistant(e)","ressource humain"
     "courier", "coursier", "chauffeur","comptable","stage","tourisme","tourist"
 
 ]
