@@ -38,58 +38,42 @@ linkedin_worldwide_filter_keywords = [
 # This dictionary maps a tag to a list of skills under that tag
 skill_categories = {
     "Data Analyst": [
-        "VBA","power query","DAX","power bi","tableau",
+        "VBA","power query","DAX","power bi","tableau", "Excel",
         "data visualization", "reporting","data analysis","web scraping",
-        "looker", "qlik",
-        # New trending skills
-        "Power Automate Desktop","Google Looker Studio","Apache Superset",
-        "Data storytelling","ObservableHQ","ThoughtSpot","Microsoft Fabric",
-        "Python Dash","Streamlit Components","BI embedded analytics",
-        "AI-powered dashboards","Real-time analytics","Causal inference",
-        "Bayesian modeling","Advanced Excel functions","Snowflake Data Sharing",
-        "DBT for analytics","Data quality monitoring","Dataprep/ETL automation",
-        "Analytics for generative AI insights"
+        "looker", "qlik","Streamlit","Real-time analytics" "Microsoft Fabric"
     ],
     "Data Engineer": [
-        "etl", "airflow", "dbt", "spark", "kafka", "hadoop", "snowflake", "databricks", "redshift", "bigquery",
-        "batch processing", "stream processing", "data modeling", "data pipelines",
-        # New trending skills
-        "Delta Lake","Apache Iceberg","Feast Feature Store","Prefect","Dagster",
-        "Flink SQL","Event-driven pipelines","Data mesh patterns","Lakehouse architecture",
-        "StreamSets","MLflow","Cloud-native ETL","PolyBase",
-        "Data observability","Airbyte","OpenLineage","Temporal workflows","Graph pipelines",
+        "etl", "airflow", "dbt", "Apache", "kafka", "hadoop", "snowflake", "databricks", "redshift", "bigquery", "Databricks",
+        "batch processing", "stream processing", "data modeling", "data pipelines", "SQL", "Nosql", "MLflow","Lakehouse architecture","Kubeflow", "CI/CD" 
       
     ],
+  
     "Data Scientist": [
-        "data science", "machine learning", "predictive modeling", "model evaluation",
-        "statistics", "nlp", "computer vision","ML", "deep learning", "dl",
-        "scikit-learn", "tensorflow", "pytorch", "keras", "xgboost", "lightgbm",
+      "predictive modeling", "model evaluation",
+        "statistics", "nlp", "computer vision",
+        "scikit-learn", "tensorflow", "pytorch", "keras", "xgboost", "lightgbm", "MCP",
         "time series", "a/b testing",
-        # New trending skills
-        "Hugging Face ","AutoML ","MLOps","Few-shot learning",
-        "Reinforcement learning","Diffusion models","Graph neural networks",
-        "Deep reinforcement learning","Model interpretability","Synthetic data generation",
-        "TinyML","Generative design","Edge AI","Transfer learning pipelines",
-        "Prompt engineering","Active learning loops","Multimodal AI",
-        "Foundation model fine-tuning","AI-assisted feature engineering"
+
     ],
     "AI/ML Engineer": [
-        "artificial intelligence", "ai", "llm", "large language models", "prompt engineering",'context engineering'
-        "fine-tuning","fine tuning", "rag","generative ai", "genai", "gen ai",
+        "llm", "prompt engineering",'context engineering',"Local llm",
+        "fine-tuning","fine tuning", "rag", "genai", "gen ai", "MLOPS", "Machine learning",
         "retrieval augmented generation", "hugging face", "openai", "gemini",
         "deepseek", "claude", "transformers", "bert", "llama","ollama",
+        "Hugging Face ","AutoML ","MLOps","Few-shot learning",
+        "Reinforcement learning","MLflow"
+
        
         # New trending skills
        "LangChain","Langraph", "crewai","tenseflow","keras","sckit-learn","sckit learn",
    
     ],
     "AI Automation/RPA/No-Code": [
-        "n8n", "zapier", "make.com", "integromat", "uipath", "power automate",
-        "power apps", "mendix", "automation anywhere", "rpa", "appian",
+        "n8n", "zapier", "make.com", "integromat", "uipath", "power automate","workato",
+        "power apps", "mendix", "automation anywhere", "rpa", "appian", "servicenow",
         # New trending skills
-      "Bubble", "Webflow", "Framer", "Glide", "Retool",
-        "Lovable", "Bolt", "Replit",
-        "Claude Code", "Claude Cowork", "AI studio","workato"
+       "Bubble", "Webflow", "Framer", "Glide", "Retool", "Lovable", "Bolt", "Replit",
+       "Openclaw","Hermes", "Claude Code", "Claude Cowork", "Antigravity"
     ],
   
     "Programming Languages": [
@@ -98,8 +82,8 @@ skill_categories = {
         "typescript", "bash", "shell scripting", "R",
     ],
     "DevOps": [
-        "docker", "kubernetes", "ci/cd", "github actions", "jenkins",
-        "terraform", "ansible", "helm", "prometheus", "grafana", "git"
+        "docker", "kubernetes", "ci/cd", "github actions", "jenkins", "Kafka",
+        "terraform", "ansible", "helm", "prometheus", "grafana", "git", "Apache"
     ],
 
   
@@ -120,47 +104,40 @@ skill_categories = {
     "Frontend/UI/UX": [
         "React", "Next.js", "Vue.js", "Nuxt.js", "Angular","SvelteKit", "SolidJS", "Astro",
         # New trending skills
-         "TailwindCSS", "CSS animations", "Framer Motion", "GSAP",
+         "TailwindCSS", "CSS", "Framer Motion", "GSAP",
         # Design tools
-        "Figma", "Adobe XD", "Canva", "Framer",
+        "Figma", "Adobe", "Canva", "Framer","Capcut",
         # 3D & advanced UI
-        "Three.js", "WebGL", "React Three Fiber",
+        "Three.js", "WebGL", "React Three Fiber","blender"
     ],
   
     "Backend/API Development": [
         "node.js", "express.js","nestjs","ASP.net"
         "spring boot", "django", "flask", "fastapi", "asp.net","Deno",
-        "REST API", "GraphQL", "GraphQL federation", "gRPC", "tRPC", "Async",
-        "WebSockets", "Kafka Streams API", "OAuth 2.0", "JWT", "API versioning"
+        "REST API", "GraphQL", "gRPC", "tRPC", "Async",
+        "WebSockets", "Kafka", "OAuth 2.0", "JWT", "API"
     ],
   
     "Project / Product Management": [
         # Methodologies
         "Agile", "Scrum", "Kanban", "Scrum@Scale", "SAFe",
-        "hybrid project frameworks", "OKRs",
-        # Tools
-        "Jira", "Linear", "ClickUp", "Notion", "Asana",
-        "Jira Advanced Automations", "ClickUp AI automations",
-        # Skills
+        "hybrid project frameworks", "OKRs", "PMP", "Trello",
+        "Jira", "Linear", "ClickUp", "Notion", "Asana", "ClickUp", "Ms Project",
         "product roadmapping", "backlog grooming", "stakeholder management",
-        "data-driven KPIs", "risk management",
-        "product analytics", "Figma-to-Jira design handoff",
-        "DevOps project tracking", "process mining",
-        "AI product experimentation",
+         "risk management","product analytics"
     ],
  
     # ─────────────────────────────────────────────
     # CYBERSECURITY  (new — high demand)
     # ─────────────────────────────────────────────
     "Cybersecurity": [
-        "penetration testing", "ethical hacking", "OWASP Top 10",
-        "SIEM (Splunk, Microsoft Sentinel)", "SOC operations",
+        "penetration", "ethical hacking", "OWASP",
+        "SIEM", "SOC",
         "vulnerability assessment", "zero-trust architecture",
-        "IAM (Identity & Access Management)", "OAuth 2.0 / OIDC",
-        "API security", "cloud security (CSPM)", "container security",
+        "IAM", "OAuth",
+        "API security", "CSPM", "container security",
         "DevSecOps", "secrets management",
         "threat modeling", "incident response",
-        "AI-powered threat detection",
     ],
  
     # ─────────────────────────────────────────────
@@ -172,24 +149,21 @@ skill_categories = {
         "decision making", "reporting","KPI",
         "veille stratégique",
         "Lean Six Sigma", "HSE",
-        "ISO", "QHSE", "ESG",
+        "ISO", "QHSE", "ESG"
     ],
 
   "Ads / Growth Marketing": [
     # Platforms
-    "Google Ads", "Meta Ads", "Facebook Ads", "Instagram Ads", "TikTok Ads", "LinkedIn Ads",
+    "Google Ads", "Meta Ads", "Instagram Ads", "TikTok Ads", "LinkedIn Ads",
     "Chatgpt ads",
-
-    # Tracking & Analytics
-    "Google Tag Manager", "GTM", "Conversion Tracking", "Pixel tracking",
-    "Google Analytics 4", "GA4"
+    "Google Tag Manager", "search console", "Ahrefs","Semrush","Moz",
+    "Google Analytics","Looker"
   ],
 
   "ERP Systems": [
     # Major ERP Platforms
-    "SAP", "Salesforce", "Oracle ERP",
-    "Microsoft Dynamics", "Dynamics 365", "Odoo", "NetSuite",
-    "Salesforce", "HubSpot","Zoho", "monday CRM",
+    "SAP", "Salesforce", "Oracle", "Google sheets"
+    "Microsoft Dynamics", "Microsoft 365", "Odoo", "NetSuite", "HubSpot","Zoho", "Monday CRM",
     "Pipedrive", "Freshsales",
   ],
 
