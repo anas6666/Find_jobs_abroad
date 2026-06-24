@@ -39,7 +39,7 @@ linkedin_worldwide_filter_keywords = [
 skill_categories = {
     "Data Analyst": [
         "VBA","power query","DAX","power bi","tableau", "Excel",
-        "data visualization", "reporting","data analysis","web scraping",
+        "data visualization","data analysis","web scraping",
         "looker", "qlik","Streamlit","Real-time analytics" "Microsoft Fabric"
     ],
     "Data Engineer": [
@@ -146,7 +146,7 @@ skill_categories = {
     "Business Intelligence & Strategy": [
         "market research", "competitive analysis", "strategic planning",
         "business case writing", "ROI",
-        "decision making", "reporting","KPI",
+        "decision making","KPI",
         "veille stratégique",
         "Lean Six Sigma", "HSE",
         "ISO", "QHSE", "ESG"
