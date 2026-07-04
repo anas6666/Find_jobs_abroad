@@ -14,7 +14,7 @@ from google.oauth2.service_account import Credentials
 # ==========================================
 START_TIME = time.time()
 # 5.5 hours = 5.5 * 60 * 60 = 19,800 seconds
-MAX_DURATION_SECONDS = 20000 
+MAX_DURATION_SECONDS = 21000 
 
 def has_time_expired():
     """Returns True if the script has been running for more than 5.5 hours."""
@@ -33,7 +33,7 @@ countries = [
     "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia", "New Zealand",
     "Turkey", "Bosnia and Herzegovina", "Albania", "Ukraine", "Russia", "Canada",
     "Portugal", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus", "Luxembourg",
-    "Iceland", "Greenland", "Switzerland", "Estonia", "Denmark", "Finland", "Sweden", "Norway", "austria", "croatia", "Ireland", "European Economic Area", "Oceania"
+    "Iceland", "Greenland", "Switzerland", "Estonia", "Denmark", "Finland", "Sweden", "Norway", "austria", "croatia", "Ireland", "European Economic Area"
 ]
 
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
