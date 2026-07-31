@@ -28,10 +28,13 @@ yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
 countries = [
-    "Qatar", "Oman", "Kuwait", "Bahrain", "Dubai", "United Arab Emirates", "Hong Kong SAR", "Singapore","European Economic Area"
+    "Qatar", "Oman", "Kuwait", "Bahrain", "Dubai", "United Arab Emirates", "Hong Kong SAR", "Singapore", "European Economic Area"
 ]
 
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
+
+# Optional: Add keywords if you want to search by specific terms, or leave empty for all jobs
+keywords_for_scraping = [""]  
 
 # ==========================================
 # --- STEP 1 — SCRAPE JOB LINKS ---
@@ -44,16 +47,21 @@ print("🚀 Starting Step 1: Scraping job links...")
 for country in countries:
     if break_step1:
         break
-        for i in range(0, 20):  # Increase range for more pages
+        
+    for keyword in keywords_for_scraping:
+        if break_step1:
+            break
+            
+        for i in range(0, 20):  # Iterate through pages
             
             # --- Safetime Check ---
             if has_time_expired():
-                print("⚠️ Approaching 5.5 hours limit during Step 1! Breaking out of link collection early to save data.")
+                print("⚠️ Approaching 5.5 hours limit during Step 1! Breaking out early.")
                 break_step1 = True
                 break
 
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?&location={country}&f_TPR=r86400&start={i*25}"
-            headers = {"User-Agent": "Mozilla/5.0"}
+            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={keyword}&location={country}&f_TPR=r86400&start={i*25}"
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
             time.sleep(1)
             try:
@@ -61,17 +69,23 @@ for country in countries:
                 soup = BeautifulSoup(response.text, "html.parser")
                 job_links = soup.find_all("a", class_="base-card__full-link")
 
+                # Break out of page loop if no jobs are returned on this page
+                if not job_links:
+                    break
+
                 for job in job_links:
                     job_url = job.get("href")
-                    if job_url and job_url not in [link[0] for link in links]: # Check if URL is already present
-                        links.append((job_url, keyword))
+                    if job_url and job_url not in links: # Check if URL is already present
+                        links.append(job_url)
+                        
                         match = re.search(r'-([0-9]+)\?', job_url)
                         if match:
                             job_id = match.group(1)
                             api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
                             api_url_job.append(api_link)
+                            
             except Exception as e:
-                print(f"Error fetching search page: {e}")
+                print(f"Error fetching search page for {country}: {e}")
 
 print(f"Total unique job links found: {len(links)}")
 
@@ -80,14 +94,14 @@ print(f"Total unique job links found: {len(links)}")
 # --- STEP 2 — SCRAPE JOB DETAILS ---
 # ==========================================
 all_job_data = [] # Stores all scraped job details before filtering
-headers = {"User-Agent": "Mozilla/5.0"}
+headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 print("🚀 Starting Step 2: Scraping specific job profiles...")
 for link in links:
     
     # --- Safetime Check ---
     if has_time_expired():
-        print(f"⚠️ Reached the 5.5 hours benchmark during Step 2. Activating fallback script to process existing ({len(all_job_data)}) records.")
+        print(f"⚠️ Reached the 5.5 hours benchmark during Step 2. Processing existing ({len(all_job_data)}) records.")
         break
 
     try:
@@ -96,14 +110,15 @@ for link in links:
         soup = BeautifulSoup(response.text, "html.parser")
 
         title_tag = soup.find('h1', class_='top-card-layout__title') or soup.find('h2', class_='top-card-layout__title')
-        title = title_tag.text.strip() if title_tag else "Not Found"
+        title = title_tag.text.strip() if title_tag else "N/A"
 
         company_tag = soup.find('a', class_='topcard__org-name-link')
-        company = company_tag.text.strip() if company_tag else "Not Found"
+        company = company_tag.text.strip() if company_tag else "N/A"
 
         country_tag = soup.find('span', class_='topcard__flavor--bullet')
-        country = country_tag.text.strip() if country_tag else "Not Found"
+        country = country_tag.text.strip() if country_tag else "N/A"
 
+        # 1. Profile Name
         try:
             name_tag = soup.find('h3', class_='base-main-card__title')
             profil_name = name_tag.text.strip() if name_tag else "N/A"
@@ -134,7 +149,7 @@ for link in links:
             "company": company,
             "country": country,
             "link": link,
-            "profil_name" : profil_name,
+            "profil_name": profil_name,
             "profil_tag": profil_tag,
             "profil_url": profil_url
         })
@@ -174,29 +189,28 @@ else:
         SPREADSHEET_URL = os.environ["SPREADSHEET_URL"]
         spreadsheet = client.open_by_url(SPREADSHEET_URL)
 
-        # Target worksheet name (change this if you prefer a different sheet name)
-        WORKSHEET_NAME_2 = 'Recruiters'
+        # Target worksheet
+        WORKSHEET_NAME = 'Recruiters'
 
         try:
-            worksheet = spreadsheet.worksheet(WORKSHEET_NAME_2)
+            worksheet = spreadsheet.worksheet(WORKSHEET_NAME)
         except gspread.WorksheetNotFound:
-            # Create worksheet if it doesn't exist yet
-            worksheet = spreadsheet.add_worksheet(title=WORKSHEET_NAME_2, rows="1000", cols="10")
+            worksheet = spreadsheet.add_worksheet(title=WORKSHEET_NAME, rows="1000", cols="10")
 
-        print(f"\nUploading data to '{WORKSHEET_NAME_2}'...")
+        print(f"\nUploading data to '{WORKSHEET_NAME}'...")
 
-        # Get existing data to check if headers are already set
+        # Get existing data to check headers
         existing_rows = worksheet.get_all_values()
 
         if not existing_rows:
-            # Sheet is empty: Write headers first, then data
+            # Write headers first, then data
             worksheet.append_row(columns_order, value_input_option='USER_ENTERED')
             worksheet.append_rows(df_jobs.values.tolist(), value_input_option='USER_ENTERED')
         else:
             # Append rows directly under existing data
             worksheet.append_rows(df_jobs.values.tolist(), value_input_option='USER_ENTERED')
 
-        print(f"✅ Successfully appended {len(df_jobs)} records to '{WORKSHEET_NAME_2}'!")
+        print(f"✅ Successfully appended {len(df_jobs)} records to '{WORKSHEET_NAME}'!")
 
     except KeyError as e:
         print(f"❌ Missing environment variable: {e}")
