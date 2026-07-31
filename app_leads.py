@@ -44,9 +44,6 @@ print("🚀 Starting Step 1: Scraping job links...")
 for country in countries:
     if break_step1:
         break
-    for keyword in keywords_for_scraping:
-        if break_step1:
-            break
         for i in range(0, 20):  # Increase range for more pages
             
             # --- Safetime Check ---
@@ -86,7 +83,7 @@ all_job_data = [] # Stores all scraped job details before filtering
 headers = {"User-Agent": "Mozilla/5.0"}
 
 print("🚀 Starting Step 2: Scraping specific job profiles...")
-for link, searched_keyword in links:
+for link in links:
     
     # --- Safetime Check ---
     if has_time_expired():
