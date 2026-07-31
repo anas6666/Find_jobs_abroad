@@ -107,16 +107,25 @@ for link, searched_keyword in links:
         country_tag = soup.find('span', class_='topcard__flavor--bullet')
         country = country_tag.text.strip() if country_tag else "Not Found"
 
-        name_tag = soup.find('h3', class_='base-main-card__title')
-        profil_name = name_tag.text.strip() if name_tag else "Not Found"
+        try:
+            name_tag = soup.find('h3', class_='base-main-card__title')
+            profil_name = name_tag.text.strip() if name_tag else "N/A"
+        except Exception:
+            profil_name = "N/A"
         
-        # 2. Profile Tag / Headline ("I get Talent jobs.")
-        tag_element = soup.find('h4', class_='base-main-card__subtitle')
-        profil_tag = tag_element.text.strip() if tag_element else "Not Found"
+        # 2. Profile Tag / Headline
+        try:
+            tag_element = soup.find('h4', class_='base-main-card__subtitle')
+            profil_tag = tag_element.text.strip() if tag_element else "N/A"
+        except Exception:
+            profil_tag = "N/A"
         
-        # 3. Profile URL ("https://hk.linkedin.com/in/charlie-bowsher-mcg")
-        url_tag = soup.find('a', class_='base-card__full-link')
-        profil_url = url_tag['href'] if url_tag and url_tag.has_attr('href') else "Not Found"
+        # 3. Profile URL
+        try:
+            url_tag = soup.find('a', class_='base-card__full-link')
+            profil_url = url_tag.get('href', 'N/A') if url_tag else "N/A"
+        except Exception:
+            profil_url = "N/A"
 
         # Skip excluded countries
         if any(excluded.lower() in country.lower() for excluded in excluded_countries):
