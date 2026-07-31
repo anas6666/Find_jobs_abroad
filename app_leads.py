@@ -133,9 +133,17 @@ for link in links:
             profil_tag = "N/A"
         
         # 3. Profile URL
+        # 3. Profile URL (Must contain '/in/' to ensure it's a user profile, not a job link)
         try:
             url_tag = soup.find('a', class_='base-card__full-link')
-            profil_url = url_tag.get('href', 'N/A') if url_tag else "N/A"
+            raw_url = url_tag.get('href', 'N/A') if url_tag else "N/A"
+            
+            # Check if it's a genuine LinkedIn profile URL
+            if raw_url != "N/A" and "/in/" in raw_url:
+                # Clean off tracking parameters (e.g., ?trk=public_jobs...)
+                profil_url = raw_url.split('?')[0]
+            else:
+                profil_url = "N/A"
         except Exception:
             profil_url = "N/A"
 
