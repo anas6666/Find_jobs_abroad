@@ -169,15 +169,15 @@ else:
         spreadsheet = client.open_by_url(SPREADSHEET_URL)
 
         # Target worksheet name (change this if you prefer a different sheet name)
-        WORKSHEET_NAME = 'Scraped Jobs'
+        WORKSHEET_NAME_2 = 'Recruiters'
 
         try:
-            worksheet = spreadsheet.worksheet(WORKSHEET_NAME)
+            worksheet = spreadsheet.worksheet(WORKSHEET_NAME_2)
         except gspread.WorksheetNotFound:
             # Create worksheet if it doesn't exist yet
-            worksheet = spreadsheet.add_worksheet(title=WORKSHEET_NAME, rows="1000", cols="10")
+            worksheet = spreadsheet.add_worksheet(title=WORKSHEET_NAME_2, rows="1000", cols="10")
 
-        print(f"\nUploading data to '{WORKSHEET_NAME}'...")
+        print(f"\nUploading data to '{WORKSHEET_NAME_2}'...")
 
         # Get existing data to check if headers are already set
         existing_rows = worksheet.get_all_values()
@@ -190,7 +190,7 @@ else:
             # Append rows directly under existing data
             worksheet.append_rows(df_jobs.values.tolist(), value_input_option='USER_ENTERED')
 
-        print(f"✅ Successfully appended {len(df_jobs)} records to '{WORKSHEET_NAME}'!")
+        print(f"✅ Successfully appended {len(df_jobs)} records to '{WORKSHEET_NAME_2}'!")
 
     except KeyError as e:
         print(f"❌ Missing environment variable: {e}")
