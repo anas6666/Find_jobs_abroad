@@ -191,7 +191,7 @@ else:
     if df_jobs.empty:
         print("⚠️ All scraped rows contained 'N/A' or were filtered out. Nothing to upload.")
     else:
-        # --- Step 4 — Connect to Google Sheets & Filter Existing URLs ---
+        # --- Step 4 — Connect to Google Sheets & Overwrite Data (Row 2 Downward) ---
         try:
             service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
             SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -208,34 +208,24 @@ else:
                 worksheet = spreadsheet.worksheet(WORKSHEET_NAME)
             except gspread.WorksheetNotFound:
                 worksheet = spreadsheet.add_worksheet(title=WORKSHEET_NAME, rows="1000", cols="10")
+                # Write header row if worksheet is newly created
+                worksheet.append_row(columns_order, value_input_option='USER_ENTERED')
 
-            print(f"\nFetching existing URLs from '{WORKSHEET_NAME}' to prevent duplicates...")
+            print(f"\n🧹 Clearing previous data from '{WORKSHEET_NAME}' (Row 1 headers will remain intact)...")
 
-            # Get all existing rows from Google Sheet
-            existing_rows = worksheet.get_all_values()
+            # 1. Clear all rows from Row 2 down
+            worksheet.batch_clear(['A2:Z10000'])
 
-            # Column index 4 (5th column) corresponds to Job_url / link
-            existing_urls = set()
-            if len(existing_rows) > 1:  # Skip your header row (row 1)
-                for row in existing_rows[1:]:
-                    if len(row) >= 5 and row[4].strip():
-                        existing_urls.add(row[4].strip())
+            print(f"🚀 Writing {len(df_jobs)} fresh records starting at cell A2...")
 
-            # 4. Remove jobs whose URLs are ALREADY inside Google Sheets
-            df_new_jobs = df_jobs[~df_jobs['link'].str.strip().isin(existing_urls)].reset_index(drop=True)
+            # 2. Write the new dataset starting at cell A2
+            worksheet.update('A2', df_jobs.values.tolist(), value_input_option='USER_ENTERED')
 
-            if df_new_jobs.empty:
-                print("ℹ️ All scraped jobs already exist in the Google Sheet. Skipping upload.")
-            else:
-                print(f"Uploading {len(df_new_jobs)} new unique records to '{WORKSHEET_NAME}'...")
-
-                # Append ONLY the data rows (Header is never overwritten)
-                worksheet.append_rows(df_new_jobs.values.tolist(), value_input_option='USER_ENTERED')
-                print(f"✅ Successfully appended {len(df_new_jobs)} new records to '{WORKSHEET_NAME}'!")
+            print(f"✅ Successfully updated '{WORKSHEET_NAME}' with {len(df_jobs)} fresh records!")
 
         except KeyError as e:
             print(f"❌ Missing environment variable: {e}")
         except Exception as e:
-            print(f"❌ Error uploading to Google Sheets: {e}")
+            print(f"❌ Error updating Google Sheets: {e}")
 
 print(f"🏁 Execution finished gracefully. Total time elapsed: {round((time.time() - START_TIME) / 60, 2)} minutes.")
