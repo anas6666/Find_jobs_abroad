@@ -147,16 +147,9 @@ import os
 # Convert list of dictionaries to DataFrame
 df = pd.DataFrame(all_job_data)
 
-# Create output directory if it doesn't exist
-os.makedirs("output", exist_ok=True)
+# Save as Excel directly in the main path
+output_file = "linkedin_jobs.xlsx"
 
-# Save as Excel
-output_file = "output/linkedin_jobsssss.xlsx"
-
-df.to_excel(
-    output_file,
-    index=False,
-    engine="openpyxl"
-)
+df.to_excel(output_file, index=False, engine="openpyxl")
 
 print(f"✅ Saved {len(df)} jobs to {output_file}")
