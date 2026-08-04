@@ -27,8 +27,9 @@ def has_time_expired():
 yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
-countries = [
-    "Qatar", "Oman", "Kuwait", "Bahrain", "Dubai", "United Arab Emirates", "Hong Kong SAR", "Singapore", "European Economic Area"
+countries = [ 
+    "Hong Kong SAR", "Singapore", "Australia", "Canada", "United States", "Spain", "France", "Germany", "United Kingdom", "Ireland",
+    "Portugal", "Czech Republic", "Lithuania", "Luxembourg", "Switzerland", "Denmark", "Finland", "Sweden", "Norway"
 ]
 
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
@@ -133,14 +134,12 @@ for link in links:
             profil_tag = "N/A"
         
         # 3. Profile URL
-        # 3. Profile URL (Must contain '/in/' to ensure it's a user profile, not a job link)
         try:
             url_tag = soup.find('a', class_='base-card__full-link')
             raw_url = url_tag.get('href', 'N/A') if url_tag else "N/A"
             
             # Check if it's a genuine LinkedIn profile URL
             if raw_url != "N/A" and "/in/" in raw_url:
-                # Clean off tracking parameters (e.g., ?trk=public_jobs...)
                 profil_url = raw_url.split('?')[0]
             else:
                 profil_url = "N/A"
@@ -181,7 +180,13 @@ else:
     # 2. Local deduplication based on job link
     df_jobs = df_jobs.drop_duplicates(subset=['link']).reset_index(drop=True)
     
-    # 3. Reorder columns to match your Google Sheet layout
+    # 3. Filter rows where 'profil_tag' contains specific keywords (case-insensitive)
+    # Includes your keywords + handles the spelling variant "direcotr" as well as "director"
+    filter_keywords = ["senior", "lead", "director", "direcotr", "founder", "co-founder","Managing","Partner"]
+    pattern = '|'.join(filter_keywords)
+    df_jobs = df_jobs[df_jobs['profil_tag'].str.contains(pattern, case=False, na=False)].reset_index(drop=True)
+    
+    # 4. Reorder columns to match your Google Sheet layout
     columns_order = [
         "Date", "title", "company", "country", "link", 
         "profil_name", "profil_tag", "profil_url"
@@ -189,7 +194,7 @@ else:
     df_jobs = df_jobs[columns_order]
     
     if df_jobs.empty:
-        print("⚠️ All scraped rows contained 'N/A' or were filtered out. Nothing to upload.")
+        print("⚠️ All scraped rows contained 'N/A', duplicates, or didn't match the target tags. Nothing to upload.")
     else:
         # --- Step 4 — Connect to Google Sheets & Overwrite Data (Row 2 Downward) ---
         try:
