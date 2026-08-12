@@ -148,8 +148,14 @@ import os
 df = pd.DataFrame(all_job_data)
 
 # Save as Excel directly in the main path
+
+
 output_file = "linkedin_jobs_fde.xlsx"
 
-df.to_excel(output_file, index=False, engine="openpyxl")
+df.to_excel(
+    output_file,
+    index=False,
+    engine="openpyxl"
+)
 
 print(f"✅ Saved {len(df)} jobs to {output_file}")
