@@ -26,21 +26,22 @@ yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d')
 
 countries = [
-    "Morocco","Saudi Arabia", "United Arab Emirates",
+    "Morocco","Saudi Arabia", "United Arab Emirates","Qatar",
     "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia","Canada", "Spain", "France", "Germany", "United Kingdom",
-    "Portugal", "Czech Republic", "Lithuania", "Luxembourg",
+    "Portugal", "Czech Republic", "Lithuania", "Luxembourg","Hungary",
     "Switzerland", "Denmark", "Finland", "Sweden", "Norway", "Ireland","United States"
 ]
 
 excluded_countries = ["India", "Pakistan", "Philippines", "Israel", "Vietnam"]
 
-keywords_for_scraping = [ 
-    "AI", "IA", "ai automation", "prompt", "workflow", "automatisation", "automation",
-    "foreigner", "foreign", "relocation", "sponsorship", "work permit", "abroad",
-    "no code", "low code", "no-code", "low-code", "nocode", "Data", "RPA", "n8n", "llm",
-    "GTM", "Marketing", "Social Media", "GEO", "SEO"
-]
+keywords_for_scraping = [ "Forward Deployed Engineer", "FDE", "Forward AI"]
 
+#keywords_for_scraping = [ 
+ #   "AI", "IA", "ai automation", "prompt", "workflow", "automatisation", "automation",
+  #  "foreigner", "foreign", "relocation", "sponsorship", "work permit", "abroad",
+   # "no code", "low code", "no-code", "low-code", "nocode", "Data", "RPA", "n8n", "llm",
+   # "GTM", "Marketing", "Social Media", "GEO", "SEO"
+#]
 
 # ==========================================
 # --- STEP 1 — SCRAPE JOB LINKS ---
@@ -56,7 +57,7 @@ for country in countries:
     for keyword in keywords_for_scraping:
         if break_step1:
             break
-        for i in range(0, 3):  
+        for i in range(0, 6):  
             
             # --- Safetime Check ---
             if has_time_expired():
@@ -147,7 +148,7 @@ import os
 df = pd.DataFrame(all_job_data)
 
 # Save as Excel directly in the main path
-output_file = "linkedin_jobs.xlsx"
+output_file = "linkedin_jobs_fde.xlsx"
 
 df.to_excel(output_file, index=False, engine="openpyxl")
 
