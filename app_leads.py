@@ -146,6 +146,18 @@ for link in links:
         except Exception:
             profil_url = "N/A"
 
+        # 4. Job Description Extraction
+        try:
+            desc_tag = soup.find('div', class_='show-more-less-html__markup') or soup.find('div', class_='description__text')
+            job_description = desc_tag.text.strip() if desc_tag else "N/A"
+        except Exception:
+            job_description = "N/A"
+
+        # 5. Email Search & Extraction via Regex
+        email_pattern = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
+        found_emails = re.findall(email_pattern, job_description)
+        email_address = found_emails[0] if found_emails else "N/A"
+
         # Skip excluded countries
         if any(excluded.lower() in country.lower() for excluded in excluded_countries):
             continue
@@ -158,7 +170,9 @@ for link in links:
             "link": link,
             "profil_name": profil_name,
             "profil_tag": profil_tag,
-            "profil_url": profil_url
+            "profil_url": profil_url,
+            "job_description": job_description,
+            "email": email_address
         })
 
     except Exception as e:
@@ -174,14 +188,14 @@ else:
     # --- Step 3 — Create DataFrame & Filter Data ---
     df_jobs = pd.DataFrame(all_job_data)
     
-    # 1. Remove any row that contains "N/A" in ANY column
-    df_jobs = df_jobs[~df_jobs.eq("N/A").any(axis=1)].reset_index(drop=True)
+    # 1. Remove any row that contains "N/A" in core columns (ignoring email/description N/A so rows aren't wiped out)
+    core_columns = ["Date", "title", "company", "country", "link", "profil_name", "profil_tag", "profil_url"]
+    df_jobs = df_jobs[~df_jobs[core_columns].eq("N/A").any(axis=1)].reset_index(drop=True)
     
     # 2. Local deduplication based on job link
     df_jobs = df_jobs.drop_duplicates(subset=['link']).reset_index(drop=True)
     
     # 3. Filter rows where 'profil_tag' contains specific keywords (case-insensitive)
-    # Includes your keywords + handles the spelling variant "direcotr" as well as "director"
     filter_keywords = ["senior", "lead", "director", "direcotr", "founder", "co-founder","Managing","Partner"]
     pattern = '|'.join(filter_keywords)
     df_jobs = df_jobs[df_jobs['profil_tag'].str.contains(pattern, case=False, na=False)].reset_index(drop=True)
@@ -189,7 +203,7 @@ else:
     # 4. Reorder columns to match your Google Sheet layout
     columns_order = [
         "Date", "title", "company", "country", "link", 
-        "profil_name", "profil_tag", "profil_url"
+        "profil_name", "profil_tag", "profil_url", "job_description", "email"
     ]
     df_jobs = df_jobs[columns_order]
     
