@@ -22,27 +22,37 @@ def has_time_expired():
     return elapsed >= MAX_DURATION_SECONDS
 
 # ==========================================
+# --- HELPER FUNCTIONS ---
+# ==========================================
+def extract_emails(text):
+    """Extracts unique email addresses from a text block using regex."""
+    if not text or text == "Not Found":
+        return ""
+    email_pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    found_emails = re.findall(email_pattern, text)
+    # Deduplicate and format as a comma-separated string
+    return ", ".join(sorted(list(set(found_emails))))
+
+# ==========================================
 # --- CONFIGURATION & SEARCH CRITERIA ---
 # ==========================================
 yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
 countries = [
-    "Morocco", "South Africa", "Mauritius", "Seychelles",
-    "Qatar", "Oman", "Kuwait", "Bahrain", "Saudi Arabia", "United Arab Emirates", "Jordan",
-    "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia", "New Zealand",
-    "Turkey", "Bosnia and Herzegovina", "Albania", "Ukraine", "Russia", "Canada",
-    "Portugal", "Malta", "Romania", "Czech Republic", "Latvia", "Lithuania", "Hungary", "Slovakia", "Cyprus", "Luxembourg",
-    "Iceland", "Greenland", "Switzerland", "Estonia", "Denmark", "Finland", "Sweden", "Norway", "austria", "croatia", "Ireland", "European Economic Area"
+    "Morocco", "Qatar", "Oman", "Kuwait", "Bahrain", "Saudi Arabia", "United Arab Emirates", 
+    "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia", "New Zealand", "Turkey", "Canada",
+    "Luxembourg", "Switzerland", "Estonia", "Denmark", "Finland", "Sweden", "Norway", "austria", "Latvia", "Lithuania", "Ireland",
+    "Czech Republic", "Hungary", "Romania", "Slovakia", "Cyprus", "Iceland", "European Economic Area",
+    "Bosnia and Herzegovina", "Albania", "Ukraine", "Russia", "South Africa", "Mauritius", "Greenland",
 ]
 
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
 
 keywords_for_scraping = [ # Keywords used to search on LinkedIn
-    "AI", "IA", "ai automation", "prompt", "workflow", "automatisation", "automation",
-    "foreigner", "foreign", "relocation", "sponsorship", "work permit", "abroad",
-    "no code", "low code", "no-code", "low-code", "nocode", "Data", "RPA", "n8n", "llm",
-    "GTM", "Marketing", "Social Media", "GEO", "SEO"
+    "AI", "IA", "ai automation", "prompt", "workflow", "automatisation", "automation", "FDE",
+    "python", "no code", "low code", "no-code", "low-code", "Data", "RPA", "n8n", "llm",
+    "GTM", "Marketing", "zapier", "GEO",
 ]
 
 # Keywords for the "Linkedin Worldwide" sheet filter
@@ -54,7 +64,7 @@ linkedin_worldwide_filter_keywords = [
 # --- SKILL CATEGORIES & DICTIONARIES ---
 # ==========================================
 skill_categories = {
-    "Data Analyst": [
+    "Data Analyst": 
         "VBA", "power query", "DAX", "power bi", "tableau", "Excel",
         "data visualization", "data analysis", "web scraping",
         "looker", "qlik", "Streamlit", "Real-time analytics", "Microsoft Fabric"
@@ -250,7 +260,7 @@ for link, searched_keyword in links:
             "country": country,
             "link": link,
             "searched_keyword": searched_keyword,
-            "description": desc # Keep description for skill counting later
+            "description": desc # Keep description for skill counting and email parsing later
         })
 
     except Exception as e:
@@ -273,13 +283,16 @@ else:
         found_world_keywords = [k for k in linkedin_worldwide_filter_keywords if re.search(r'\b' + re.escape(k) + r'\b', description, flags=re.IGNORECASE)]
         return ", ".join(found_world_keywords) if found_world_keywords else ""
 
+    # Extract emails & filter keywords from description
+    df_all_jobs['Email'] = df_all_jobs['description'].apply(extract_emails)
     df_all_jobs['found_linkedin_worldwide_keywords'] = df_all_jobs['description'].apply(check_worldwide_keywords)
+    
     filtered_worldwide_df = df_all_jobs[df_all_jobs['found_linkedin_worldwide_keywords'] != ""].copy()
 
-    # Select and reorder columns for "Linkedin Worldwide" sheet
+    # Select and reorder columns for "Linkedin Worldwide" sheet (including Email)
     filtered_worldwide_df = filtered_worldwide_df[[
-        "Date", "title", "company", "country", "link", "searched_keyword", "found_linkedin_worldwide_keywords"
-    ]].rename(columns={"found_linkedin_worldwide_keywords": "Found Keywords"}) # Rename for clarity in sheet
+        "Date", "title", "company", "country", "link", "Email", "searched_keyword", "found_linkedin_worldwide_keywords"
+    ]].rename(columns={"found_linkedin_worldwide_keywords": "Found Keywords"})
 
     print(f"Jobs for 'Linkedin Worldwide' sheet (unique and filtered): {len(filtered_worldwide_df)}")
 
@@ -330,7 +343,7 @@ else:
             filtered_worldwide_df.values.tolist()
         )
     else:
-        sheet_worldwide.update([["Date", "title", "company", "country", "link", "searched_keyword", "Found Keywords"]])
+        sheet_worldwide.update([["Date", "title", "company", "country", "link", "Email", "searched_keyword", "Found Keywords"]])
     print(f"✅ Data successfully updated in '{WORKSHEET_NAME_WORLDWIDE}'!")
 
     # --- Update "Count Skills" Sheet ---
