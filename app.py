@@ -64,7 +64,7 @@ linkedin_worldwide_filter_keywords = [
 # --- SKILL CATEGORIES & DICTIONARIES ---
 # ==========================================
 skill_categories = {
-    "Data Analyst": 
+    "Data Analyst": [
         "VBA", "power query", "DAX", "power bi", "tableau", "Excel",
         "data visualization", "data analysis", "web scraping",
         "looker", "qlik", "Streamlit", "Real-time analytics", "Microsoft Fabric"
