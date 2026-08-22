@@ -40,10 +40,10 @@ yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
 countries = [
-    "Morocco", "Qatar", "Oman", "Kuwait", "Bahrain", "Saudi Arabia", "United Arab Emirates", 
-    "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia", "New Zealand", "Turkey", "Canada",
+    "Morocco", "Qatar", "Oman", "Kuwait", "Bahrain", "Saudi Arabia", "United Arab Emirates", "Dubai","Abu Dhabi",
     "Luxembourg", "Switzerland", "Estonia", "Denmark", "Finland", "Sweden", "Norway", "austria", "Latvia", "Lithuania", "Ireland",
     "Czech Republic", "Hungary", "Romania", "Slovakia", "Cyprus", "Iceland", "European Economic Area",
+    "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia", "New Zealand", "Turkey", "Canada",
     "Bosnia and Herzegovina", "Albania", "Ukraine", "Russia", "South Africa", "Mauritius", "Greenland",
 ]
 
@@ -186,7 +186,7 @@ for country in countries:
     for keyword in keywords_for_scraping:
         if break_step1:
             break
-        for i in range(0, 2):  # Increase range for more pages
+        for i in range(0, 3):  # Increase range for more pages
             
             # --- Safetime Check ---
             if has_time_expired():
