@@ -2,7 +2,7 @@ name: Leads Scraper
 
 on:
   schedule:
-    - cron: '0 1 * * *'  #4AM DUBAI
+    - cron: '0 0 * * *'  #4AM DUBAI
   workflow_dispatch:     # Allows manual run
 
 jobs:
