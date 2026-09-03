@@ -40,9 +40,10 @@ yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
 countries = [
-    "Morocco", "Qatar", "Oman", "Kuwait", "Bahrain", "Saudi Arabia", "United Arab Emirates", "Dubai","Abu Dhabi",
+    "Saudi Arabia", "United Arab Emirates", "Dubai","Abu Dhabi",
     "Luxembourg", "Switzerland", "Estonia", "Denmark", "Finland", "Sweden", "Norway", "austria", "Latvia", "Lithuania", "Ireland",
     "Czech Republic", "Hungary", "Romania", "Slovakia", "Cyprus", "Iceland", "European Economic Area",
+    "Morocco", "Qatar", "Oman", "Kuwait", "Bahrain",
     "Japan", "South Korea", "Hong Kong SAR", "Singapore", "Australia", "New Zealand", "Turkey", "Canada",
     "Bosnia and Herzegovina", "Albania", "Ukraine", "Russia", "South Africa", "Mauritius", "Greenland",
 ]
@@ -91,7 +92,7 @@ skill_categories = {
         "n8n", "zapier", "make.com", "integromat", "uipath", "power automate", "workato",
         "power apps", "mendix", "automation anywhere", "rpa", "appian", "servicenow",
         "Bubble", "Webflow", "Framer", "Glide", "Retool", "Lovable", "Bolt", "Replit",
-        "Openclaw", "Hermes", "Claude Code", "Claude Cowork", "Antigravity"
+        "Openclaw", "Hermes", "Claude Code", "Claude Cowork", "Antigravity", "copilot studio", "Claude SDK", "OpenAI SDK","Semantic Kernel"
     ],
     "Programming Languages": [
         "python", "javascript", "go", "java", "c#", "scala",
