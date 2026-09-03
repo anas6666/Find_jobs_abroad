@@ -175,8 +175,8 @@ count_skills_keywords = list(set(count_skills_keywords))
 # ==========================================
 # --- STEP 1 — SCRAPE JOB LINKS ---
 # ==========================================
-links = []
-api_url_job = []
+links = [] # Will now store tuples: (clean_url, api_link, keyword)
+seen_job_ids = set() # O(1) lookups: fixes the CPU freezing issue
 break_step1 = False
 
 print("🚀 Starting Step 1: Scraping job links...")
@@ -186,11 +186,11 @@ for country in countries:
     for keyword in keywords_for_scraping:
         if break_step1:
             break
-        for i in range(0, 3):  # Increase range for more pages
+        for i in range(0, 3):  
             
             # --- Safetime Check ---
             if has_time_expired():
-                print("⚠️ Approaching 5.5 hours limit during Step 1! Breaking out of link collection early to save data.")
+                print("⚠️ Approaching 5.5 hours limit during Step 1! Breaking out early.")
                 break_step1 = True
                 break
 
@@ -199,33 +199,40 @@ for country in countries:
 
             time.sleep(1)
             try:
-                response = requests.get(url, headers=headers)
+                # FIX 1: Added timeout=10 so the script doesn't hang forever if LinkedIn blocks it
+                response = requests.get(url, headers=headers, timeout=10)
                 soup = BeautifulSoup(response.text, "html.parser")
                 job_links = soup.find_all("a", class_="base-card__full-link")
 
                 for job in job_links:
                     job_url = job.get("href")
-                    if job_url and job_url not in [link[0] for link in links]: # Check if URL is already present
-                        links.append((job_url, keyword))
-                        match = re.search(r'-([0-9]+)\?', job_url)
-                        if match:
-                            job_id = match.group(1)
+                    if not job_url: 
+                        continue
+                    
+                    # FIX 2: Safely extract purely the numerical Job ID to ignore tracking parameters
+                    url_without_params = job_url.split('?')[0]
+                    job_id = url_without_params.split('-')[-1]
+                    
+                    if job_id.isdigit():
+                        # FIX 3: Set lookups are instant, fixing the CPU bottleneck
+                        if job_id not in seen_job_ids:
+                            seen_job_ids.add(job_id)
+                            clean_url = f"https://www.linkedin.com/jobs/view/{job_id}"
                             api_link = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
-                            api_url_job.append(api_link)
+                            links.append((clean_url, api_link, keyword))
             except Exception as e:
                 print(f"Error fetching search page: {e}")
 
 print(f"Total unique job links found: {len(links)}")
 
-
 # ==========================================
 # --- STEP 2 — SCRAPE JOB DETAILS ---
 # ==========================================
-all_job_data = [] # Stores all scraped job details before filtering
+all_job_data = [] 
 headers = {"User-Agent": "Mozilla/5.0"}
 
 print("🚀 Starting Step 2: Scraping specific job profiles...")
-for link, searched_keyword in links:
+for clean_url, api_link, searched_keyword in links:
     
     # --- Safetime Check ---
     if has_time_expired():
@@ -234,7 +241,8 @@ for link, searched_keyword in links:
 
     try:
         time.sleep(1)
-        response = requests.get(link, headers=headers)
+        # FIX 4: Requesting the API link instead of full webpage + Added Timeout
+        response = requests.get(api_link, headers=headers, timeout=10)
         soup = BeautifulSoup(response.text, "html.parser")
 
         title_tag = soup.find('h1', class_='top-card-layout__title') or soup.find('h2', class_='top-card-layout__title')
@@ -258,13 +266,13 @@ for link, searched_keyword in links:
             "title": title,
             "company": company,
             "country": country,
-            "link": link,
+            "link": clean_url, # Now saving the beautiful clean URL to your sheet
             "searched_keyword": searched_keyword,
-            "description": desc # Keep description for skill counting and email parsing later
+            "description": desc 
         })
 
     except Exception as e:
-        print(f"Error scraping details for {link}: {e}")
+        print(f"Error scraping details for {clean_url}: {e}")
 
 
 # ==========================================
