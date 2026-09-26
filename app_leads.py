@@ -35,7 +35,7 @@ countries = [
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
 
 # Optional: Add keywords if you want to search by specific terms, or leave empty for all jobs
-keywords_for_scraping = [""]  
+keywords_for_scraping = ["RH","HR","Recruiter","Talent Acquisition","Recruitment","Recrutement","People","Human Resources"]  
 
 # ==========================================
 # --- STEP 1 — SCRAPE JOB LINKS ---
