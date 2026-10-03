@@ -28,12 +28,20 @@ driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=opti
 # -------------------------
 # Cities and domains
 # ------------------------
-cities = ["Auckland", "Australia", "Austria","Bahrain","Canada","Czech Republic","Denmark",
-          "Finland","Hungary","Italy","Kuwait","Luxembourg","Norway","Poland","Oman",
-          "Portugal","Qatar","Saudi Arabia","Singapore","South Korea","España","Sweden",
-          "Switzerland","Turkey","UAE","Romania","Jakarta"]
-exts = ["nz", "au","at","bh","ca","cz","dk","fi","hu","it","kw","lu","no","pl","om","pt",
-        "qt","sa","sg","kr","es","se","ch","tr","ae","ro", "id"]
+cities = ["Auckland", "Australia"]
+
+
+exts = ["nz", "au"]
+
+#cities = ["Auckland", "Australia", "Austria","Bahrain","Canada","Czech Republic","Denmark",
+ #         "Finland","Hungary","Italy","Kuwait","Luxembourg","Norway","Poland","Oman",
+  #        "Portugal","Qatar","Saudi Arabia","Singapore","South Korea","España","Sweden",
+   #       "Switzerland","Turkey","UAE"]
+
+
+#exts = ["nz", "au","at","bh","ca","cz","dk","fi","hu","it","kw","lu","no","pl","om","pt",
+  #      "qt","sa","sg","kr","es","se","ch","tr","ae"]
+
 city_ext_map = dict(zip(cities, exts))
 
 job_data = []
@@ -46,7 +54,7 @@ for city, ext in city_ext_map.items():
     job_links = []
 
     try:
-        for page in range(0, 10):  # only first page
+        for page in range(0, 2):  # only first page
             url = f'https://{ext}.indeed.com/jobs?q=&l={city}&radius=25&fromage=1&from=searchOnDesktopSerp&start={page * 10}'
             print(f"🌍 Page {page+1}: {url}")
             driver.get(url)
