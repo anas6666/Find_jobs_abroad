@@ -14,9 +14,24 @@ from google.oauth2.service_account import Credentials
 import gspread
 
 # ---------------------------------------------------------
+# Screenshot Directory Setup
+# ---------------------------------------------------------
+SCREENSHOT_DIR = "screenshots"
+os.makedirs(SCREENSHOT_DIR, exist_ok=True)
+
+def capture_screenshot(driver, country_name, page_num):
+    """Saves a screenshot when job cards are not found or an error occurs."""
+    safe_country = country_name.lower().replace(" ", "_")
+    filename = f"{SCREENSHOT_DIR}/no_cards_{safe_country}_page_{page_num}.png"
+    try:
+        driver.save_screenshot(filename)
+        print(f"📸 Screenshot saved: {filename}")
+    except Exception as e:
+        print(f"⚠️ Failed to take screenshot: {e}")
+
+# ---------------------------------------------------------
 # 1. Multi-Country & Domain Setup
 # ---------------------------------------------------------
-# Define target countries with their respective Indeed extensions and default query locations
 country_map = [
     {"country": "New Zealand", "ext": "nz", "location": "Auckland"},
     {"country": "Australia", "ext": "au", "location": "Australia"},
@@ -30,16 +45,16 @@ def fetch_job_details_api(job_key, ext, location_query=""):
     api_url = f"https://{ext}.indeed.com/viewjob?jk={job_key}&spa=1"
 
     headers = {
-    "accept": "*/*",
-    "accept-language": "en-US,en;q=0.9",
-    "priority": "u=1, i",
-    "referer": "https://ae.indeed.com/jobs?q=&l=Dubai&from=searchOnHP&vjk=beb1873b783ca0a1",
-    "sec-ch-ua": '"Not=A?Brand";v="99", "Microsoft Edge";v="151", "Chromium";v="151"',
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"macOS"',
-    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0"
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "priority": "u=1, i",
+        "referer": "https://ae.indeed.com/jobs?q=&l=Dubai&from=searchOnHP&vjk=beb1873b783ca0a1",
+        "sec-ch-ua": '"Not=A?Brand";v="99", "Microsoft Edge";v="151", "Chromium";v="151"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"macOS"',
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0"
     }
-    
+
     cookies = {
         "DD_VERSION": "jobseeker-frontend:01acbbd760c598b55e36fe9549084186e0bba5af",
         "CTK": "1k40mh9jahmno800",
@@ -47,26 +62,18 @@ def fetch_job_details_api(job_key, ext, location_query=""):
         "INDEED_CSRF_TOKEN": "pJDWZyt5dHhmaSzkPeIgSyk9s3xSFfz7"
     }
 
-    
-
     try:
         res = requests.get(api_url, headers=headers, cookies=cookies, timeout=10)
         if res.status_code == 200:
             data = res.json()
-            # Extract fields from internal JSON response structure
             job_info = data.get("jobModel", {}).get("jobData", {})
-            title = job_info.get("jobTitle", "N/A")
-            company = job_info.get("companyName", "N/A")
-            location = job_info.get("location", {}).get("formattedLocation", "N/A")
-            description = job_info.get("sanitizedJobDescription", "N/A")
-            
             return {
-                "Title": title,
-                "Company": company,
-                "Location": location,
-                "Description": description
+                "Title": job_info.get("jobTitle", "N/A"),
+                "Company": job_info.get("companyName", "N/A"),
+                "Location": job_info.get("location", {}).get("formattedLocation", "N/A"),
+                "Description": job_info.get("sanitizedJobDescription", "N/A")
             }
-    except Exception as e:
+    except Exception:
         pass
     
     return None
@@ -127,9 +134,11 @@ for item in country_map:
 
         except TimeoutException:
             print(f"⚠️ No job cards found for {country} on page {page + 1}")
+            capture_screenshot(driver, country, page + 1)
             continue
         except Exception as e:
             print(f"⚠️ Error loading page: {e}")
+            capture_screenshot(driver, country, page + 1)
             continue
 
     print(f"✅ Found {len(job_links)} job links in {country}")
@@ -138,10 +147,8 @@ for item in country_map:
     for i, link in enumerate(job_links, start=1):
         jk = extract_jk_from_url(link)
         
-        # Method A: Try fast internal API call
         details = fetch_job_details_api(jk, ext, location) if jk else None
         
-        # Method B: Fallback to Selenium page load if API fails
         if not details:
             try:
                 driver.get(link)
@@ -178,7 +185,6 @@ if not df.empty:
     df = df.drop_duplicates(subset=['Link']).reset_index(drop=True)
     df['Description'] = df['Description'].fillna('N/A')
 
-    # Keyword filtering
     keywords = ['n8n', 'Zapier', 'make.com', 'Integromat', 'data', 'GEO']
 
     def get_matching_keywords(desc, target_keywords):
