@@ -20,11 +20,12 @@ jobs:
         with:
           python-version: '3.9.12'
 
-      # 3️⃣ Install Chrome, ChromeDriver, Xvfb, tmate, and VNC tools
-      - name: Install Chrome, ChromeDriver and VNC Dependencies
+      # 3️⃣ Install Chrome, ChromeDriver, Xvfb, VNC, and Node.js
+      - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip xvfb tmate x11vnc novnc
+          sudo apt-get install -y wget unzip xvfb x11vnc novnc nodejs npm
+          sudo npm install -g localtunnel
           wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install -y ./google-chrome-stable_current_amd64.deb
           DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE")
@@ -40,25 +41,32 @@ jobs:
           python -m pip install --upgrade pip
           pip install selenium pandas gspread google-auth
 
-      # 5️⃣ Setup tmate background session (Option 1)
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          detached: true
-          limit-access-to-actor: false
-
-      # 6️⃣ Start Web VNC Proxy (Option 2)
-      - name: Start Web VNC Proxy
+      # 5️⃣ Start Display, VNC Server, and Expose Public Web Link
+      - name: Start Web VNC & Expose Public URL
         run: |
-          # Start virtual display screen on :99
+          # 1. Start Virtual Framebuffer
           Xvfb :99 -screen 0 1920x1080x24 &
           sleep 2
-          # Start x11vnc server pointing to display :99
-          x11vnc -display :99 -forever -shared -rfbport 5900 -nopw &
-          # Start noVNC web interface on port 8080
-          /usr/share/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 8080 &
 
-      # 7️⃣ Run Indeed Scraper on Virtual Display :99
+          # 2. Start VNC Server
+          x11vnc -display :99 -forever -shared -rfbport 5900 -nopw &
+
+          # 3. Start noVNC Web Interface on Port 8080
+          /usr/share/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 8080 &
+          sleep 3
+
+          # 4. Get Public IP (Used as Localtunnel password if prompted)
+          PUBLIC_IP=$(curl -s https://loca.lt/mytunnelpassword)
+          
+          # 5. Launch Localtunnel and print the direct clickable URL to the console logs
+          echo "================================================================="
+          echo "🌐 YOUR DIRECT BROWSER GUI LINK IS GENERATING BELOW:"
+          echo "🔑 TUNNEL PASSWORD (IF PROMPTED): $PUBLIC_IP"
+          echo "================================================================="
+          lt --port 8080 &
+          sleep 5
+
+      # 6️⃣ Run Indeed Scraper on Display :99
       - name: Run Indeed Scraper
         env:
           DISPLAY: ":99"
@@ -66,7 +74,7 @@ jobs:
           SPREADSHEET_URL: ${{ secrets.SPREADSHEET_URL }}
         run: python app2.py
 
-      # 8️⃣ Upload Screenshots Artifact
+      # 7️⃣ Upload Screenshots
       - name: Upload Screenshots Artifact
         if: always()
         uses: actions/upload-artifact@v4
