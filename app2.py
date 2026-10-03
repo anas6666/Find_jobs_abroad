@@ -28,19 +28,29 @@ country_map = [
 def fetch_job_details_api(job_key, ext, location_query=""):
     """Fetches full job data using Indeed's fast internal API endpoint."""
     api_url = f"https://{ext}.indeed.com/viewjob?jk={job_key}&spa=1"
-    
+
     headers = {
-        "accept": "*/*",
-        "accept-language": "en-US,en;q=0.9",
-        "referer": f"https://{ext}.indeed.com/jobs?q=&l={urllib.parse.quote(location_query)}",
-        "sec-ch-ua": '"Not=A?Brand";v="99", "Microsoft Edge";v="151", "Chromium";v="151"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0"
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9",
+    "priority": "u=1, i",
+    "referer": "https://ae.indeed.com/jobs?q=&l=Dubai&from=searchOnHP&vjk=beb1873b783ca0a1",
+    "sec-ch-ua": '"Not=A?Brand";v="99", "Microsoft Edge";v="151", "Chromium";v="151"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"macOS"',
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0"
+    }
+    
+    cookies = {
+        "DD_VERSION": "jobseeker-frontend:01acbbd760c598b55e36fe9549084186e0bba5af",
+        "CTK": "1k40mh9jahmno800",
+        "CSRF": "YPLv98WerD9Cvpqe4RSC4afpsqubGem3",
+        "INDEED_CSRF_TOKEN": "pJDWZyt5dHhmaSzkPeIgSyk9s3xSFfz7"
     }
 
+    
+
     try:
-        res = requests.get(api_url, headers=headers, timeout=10)
+        res = requests.get(api_url, headers=headers, cookies=cookies, timeout=10)
         if res.status_code == 200:
             data = res.json()
             # Extract fields from internal JSON response structure
