@@ -20,11 +20,11 @@ jobs:
         with:
           python-version: '3.9.12'
 
-      # 3️⃣ Install Chrome, ChromeDriver, and Xvfb
-      - name: Install Chrome and ChromeDriver
+      # 3️⃣ Install Chrome, ChromeDriver, Xvfb, tmate, and VNC tools
+      - name: Install Chrome, ChromeDriver and VNC Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip xvfb
+          sudo apt-get install -y wget unzip xvfb tmate x11vnc novnc
           wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install -y ./google-chrome-stable_current_amd64.deb
           DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE")
@@ -34,26 +34,39 @@ jobs:
           sudo chmod +x /usr/local/bin/chromedriver
           rm -rf chromedriver-linux64*
 
-      # 4️⃣ Install dependencies
+      # 4️⃣ Install Python dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install selenium pandas gspread google-auth
 
-      # 5️⃣ Setup interactive session for manual solving
+      # 5️⃣ Setup tmate background session (Option 1)
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         with:
-          detached: true # Keeps the job running in background while listening for connection
+          detached: true
+          limit-access-to-actor: false
 
-      # 6️⃣ Run Indeed Scraper
+      # 6️⃣ Start Web VNC Proxy (Option 2)
+      - name: Start Web VNC Proxy
+        run: |
+          # Start virtual display screen on :99
+          Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 2
+          # Start x11vnc server pointing to display :99
+          x11vnc -display :99 -forever -shared -rfbport 5900 -nopw &
+          # Start noVNC web interface on port 8080
+          /usr/share/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 8080 &
+
+      # 7️⃣ Run Indeed Scraper on Virtual Display :99
       - name: Run Indeed Scraper
         env:
+          DISPLAY: ":99"
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           SPREADSHEET_URL: ${{ secrets.SPREADSHEET_URL }}
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python app2.py
+        run: python app2.py
 
-      # 7️⃣ Upload Screenshots
+      # 8️⃣ Upload Screenshots Artifact
       - name: Upload Screenshots Artifact
         if: always()
         uses: actions/upload-artifact@v4
