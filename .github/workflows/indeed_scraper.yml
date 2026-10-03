@@ -46,3 +46,11 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           SPREADSHEET_URL: ${{ secrets.SPREADSHEET_URL }}
         run: python app2.py
+
+      - name: Upload Screenshots Artifact
+        if: always()  # Upload screenshots even if the Python script failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: indeed-scraping-screenshots
+          path: screenshots/
+          if-no-files-found: ignore
