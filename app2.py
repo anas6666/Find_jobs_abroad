@@ -7,7 +7,14 @@ import requests
 from google.oauth2.service_account import Credentials
 import gspread
 
+# Selenium Imports
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+import undetected_chromedriver as uc
+from selenium_stealth import stealth
 
 # ---------------------------------------------------------
 # Screenshot Directory Setup
@@ -44,22 +51,15 @@ def fetch_job_details_api(job_key, ext, location_query=""):
         "accept": "*/*",
         "accept-language": "en-US,en;q=0.9",
         "priority": "u=1, i",
-        "referer": "https://ae.indeed.com/jobs?q=&l=Dubai&from=searchOnHP&vjk=beb1873b783ca0a1",
+        "referer": f"https://{ext}.indeed.com/",
         "sec-ch-ua": '"Not=A?Brand";v="99", "Microsoft Edge";v="151", "Chromium";v="151"',
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"macOS"',
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0"
     }
 
-    cookies = {
-        "DD_VERSION": "jobseeker-frontend:01acbbd760c598b55e36fe9549084186e0bba5af",
-        "CTK": "1k40mh9jahmno800",
-        "CSRF": "YPLv98WerD9Cvpqe4RSC4afpsqubGem3",
-        "INDEED_CSRF_TOKEN": "pJDWZyt5dHhmaSzkPeIgSyk9s3xSFfz7"
-    }
-
     try:
-        res = requests.get(api_url, headers=headers, cookies=cookies, timeout=10)
+        res = requests.get(api_url, headers=headers, timeout=10)
         if res.status_code == 200:
             data = res.json()
             job_info = data.get("jobModel", {}).get("jobData", {})
@@ -86,12 +86,6 @@ def extract_jk_from_url(url):
     return None
 
 # ---------------------------------------------------------
-# 3. Selenium Setup
-# ---------------------------------------------------------
-import undetected_chromedriver as uc
-from selenium_stealth import stealth
-
-# ---------------------------------------------------------
 # 3. Stealth Selenium Setup
 # ---------------------------------------------------------
 options = uc.ChromeOptions()
@@ -100,15 +94,11 @@ options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument("--window-size=1920,1080")
 
-# Note: Do not add "--headless=new" here. 
-# Running via `xvfb-run` in the workflow simulates a real display monitor.
-
 driver = uc.Chrome(
     driver_executable_path="/usr/local/bin/chromedriver",
     options=options
 )
 
-# Apply stealth patches to mask navigator variables
 stealth(
     driver,
     languages=["en-US", "en"],
@@ -138,10 +128,11 @@ for item in country_map:
         
         try:
             driver.get(search_url)
-            time.sleep(2)
+            time.sleep(3)
 
-            job_cards = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a.tapItem, a[id^='job_']"))
+            # Updated selector to match current Indeed DOM elements safely
+            job_cards = WebDriverWait(driver, 15).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a[id^='job_'], a.jxf, div.job_seen_beacon a"))
             )
             
             for card in job_cards:
@@ -150,7 +141,7 @@ for item in country_map:
                     job_links.append(link)
 
         except TimeoutException:
-            print(f"⚠️ No job cards found for {country} on page {page + 1}")
+            print(f"⚠️ No job cards found for {country} on page {page + 1} (Timeout)")
             capture_screenshot(driver, country, page + 1)
             continue
         except Exception as e:
@@ -169,7 +160,7 @@ for item in country_map:
         if not details:
             try:
                 driver.get(link)
-                time.sleep(1)
+                time.sleep(2)
                 
                 title = driver.find_element(By.TAG_NAME, "h1").text.strip() if driver.find_elements(By.TAG_NAME, "h1") else "N/A"
                 company = driver.find_element(By.CSS_SELECTOR, 'div[data-company-name="true"] a').text.strip() if driver.find_elements(By.CSS_SELECTOR, 'div[data-company-name="true"] a') else "N/A"
@@ -189,7 +180,7 @@ for item in country_map:
                 "Description": details["Description"],
                 "Link": link
             })
-            print(f"  ({i}/{len(job_links)}) 🏢 {details['Company']} | 💼 {details['Title']}")
+            print(f"   ({i}/{len(job_links)}) 🏢 {details['Company']} | 💼 {details['Title']}")
 
 driver.quit()
 
