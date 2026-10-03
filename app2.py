@@ -4,14 +4,10 @@ import json
 import urllib.parse
 import pandas as pd
 import requests
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from google.oauth2.service_account import Credentials
 import gspread
+
+
 
 # ---------------------------------------------------------
 # Screenshot Directory Setup
@@ -92,15 +88,36 @@ def extract_jk_from_url(url):
 # ---------------------------------------------------------
 # 3. Selenium Setup
 # ---------------------------------------------------------
-options = webdriver.ChromeOptions()
-options.add_argument("--headless=new")
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-blink-features=AutomationControlled")
-options.add_argument("--disable-dev-shm-usage")
-options.add_argument("--window-size=1920,1080")
-options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36")
+import undetected_chromedriver as uc
+from selenium_stealth import stealth
 
-driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
+# ---------------------------------------------------------
+# 3. Stealth Selenium Setup
+# ---------------------------------------------------------
+options = uc.ChromeOptions()
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument("--window-size=1920,1080")
+
+# Note: Do not add "--headless=new" here. 
+# Running via `xvfb-run` in the workflow simulates a real display monitor.
+
+driver = uc.Chrome(
+    driver_executable_path="/usr/local/bin/chromedriver",
+    options=options
+)
+
+# Apply stealth patches to mask navigator variables
+stealth(
+    driver,
+    languages=["en-US", "en"],
+    vendor="Google Inc.",
+    platform="Win32",
+    webgl_vendor="Intel Inc.",
+    renderer="Intel Iris OpenGL Engine",
+    fix_hairline=True,
+)
 
 job_data = []
 
