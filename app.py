@@ -68,49 +68,54 @@ skill_categories = {
     "Data Analyst": [
         "VBA", "power query", "DAX", "power bi", "tableau", "Excel",
         "data visualization", "data analysis", "web scraping",
-        "looker", "qlik", "Streamlit", "Real-time analytics", "Microsoft Fabric"
+        "looker", "qlik", "Streamlit", "Real-time analytics", "Microsoft Fabric",
+        "DuckDB", "ThoughtSpot", "Cube.js", "Semantic Layer"
     ],
     "Data Engineer": [
         "etl", "airflow", "dbt", "Apache", "kafka", "hadoop", "snowflake", "databricks", "redshift", "bigquery", "Databricks",
-        "batch processing", "stream processing", "data modeling", "data pipelines", "SQL", "Nosql", "MLflow", "Lakehouse architecture", "Kubeflow", "CI/CD" 
+        "batch processing", "stream processing", "data modeling", "data pipelines", "SQL", "Nosql", "MLflow", "Lakehouse architecture", "Kubeflow", "CI/CD",
+        "Apache Iceberg", "Delta Lake", "Apache Hudi", "Polars", "Data Observability", "Monte Carlo", "Atlan", "DataHub"
     ],
     "Data Scientist": [
         "predictive modeling", "model evaluation",
         "statistics", "nlp", "computer vision",
         "scikit-learn", "tensorflow", "pytorch", "keras", "xgboost", "lightgbm", "MCP",
-        "time series", "a/b testing"
+        "time series", "a/b testing", "Polars", "Jupyter", "Statistical Modeling"
     ],
     "AI/ML Engineer": [
-        "llm", "prompt engineering", 'context engineering', "Local llm",
+        "llm", "prompt engineering", "context engineering", "Local llm",
         "fine-tuning", "fine tuning", "rag", "genai", "gen ai", "MLOPS", "Machine learning",
         "retrieval augmented generation", "hugging face", "openai", "gemini",
         "deepseek", "claude", "transformers", "bert", "llama", "ollama",
-        "Hugging Face ", "AutoML ", "MLOps", "Few-shot learning",
-        "Reinforcement learning", "MLflow", "LangChain", "Langraph", "crewai", "tenseflow", "keras", "sckit-learn", "sckit learn"
+        "Hugging Face", "AutoML", "MLOps", "Few-shot learning",
+        "Reinforcement learning", "MLflow", "LangChain", "Langraph", "crewai", "tenseflow", "keras", "sckit-learn", "sckit learn",
+        "vLLM", "DSPy", "AutoGen", "Ragas", "DeepEval", "Guardrails AI", "LangSmith", "Phoenix", "SGLang", "TensorRT-LLM", "Function Calling", "Structured Outputs"
     ],
     "AI Automation/RPA/No-Code": [
         "n8n", "zapier", "make.com", "integromat", "uipath", "power automate", "workato",
         "power apps", "mendix", "automation anywhere", "rpa", "appian", "servicenow",
         "Bubble", "Webflow", "Framer", "Glide", "Retool", "Lovable", "Bolt", "Replit",
-        "Openclaw", "Hermes", "Claude Code", "Claude Cowork", "Antigravity", "copilot studio", "Claude SDK", "OpenAI SDK","Semantic Kernel"
+        "Openclaw", "Hermes", "Claude Code", "Claude Cowork", "Antigravity", "copilot studio", "Claude SDK", "OpenAI SDK", "Semantic Kernel",
+        "Cursor", "Windsurf", "v0.dev", "Dify", "Flowise", "Langflow"
     ],
     "Programming Languages": [
         "python", "javascript", "go", "java", "c#", "scala",
         "kotlin", "swift", "php", "ruby", "rust", "HTML", "CSS", "sql", "nosql",
-        "typescript", "bash", "shell scripting", "R"
+        "typescript", "bash", "shell scripting", "R", "Mojo", "Zig"
     ],
     "DevOps": [
         "docker", "kubernetes", "ci/cd", "github actions", "jenkins", "Kafka",
-        "terraform", "ansible", "helm", "prometheus", "grafana", "git", "Apache"
+        "terraform", "ansible", "helm", "prometheus", "grafana", "git", "Apache",
+        "OpenTofu", "Crossplane", "Karpenter", "Platform Engineering", "RunPod", "Modal", "CoreWeave"
     ],
     "Cloud Platforms": [
         "aws", "azure", "gcp",
-        "AWS Bedrock", "Azure OpenAI Service", "GCP Vertex AI"
+        "AWS Bedrock", "Azure OpenAI Service", "GCP Vertex AI", "Cloudflare Workers"
     ],
     "Databases": [
         "postgresql", "mysql", "mongodb", "redis", "cassandra", "sqlite",
         "Neo4j", "Amazon QLDB", "CockroachDB", "YugabyteDB", "TimescaleDB", "DynamoDB", "cloud-native DB",
-        "Pinecone", "Weaviate", "Qdrant", "pgvector"
+        "Pinecone", "Weaviate", "Qdrant", "pgvector", "ChromaDB", "Milvus", "LanceDB", "Hybrid Search"
     ],
     "Frontend/UI/UX": [
         "React", "Next.js", "Vue.js", "Nuxt.js", "Angular", "SvelteKit", "SolidJS", "Astro",
@@ -122,7 +127,7 @@ skill_categories = {
         "node.js", "express.js", "nestjs", "ASP.net",
         "spring boot", "django", "flask", "fastapi", "asp.net", "Deno",
         "REST API", "GraphQL", "gRPC", "tRPC", "Async",
-        "WebSockets", "Kafka", "OAuth 2.0", "JWT", "API"
+        "WebSockets", "Kafka", "OAuth 2.0", "JWT", "API", "Bun"
     ],
     "Project / Product Management": [
         "Agile", "Scrum", "Kanban", "Scrum@Scale", "SAFe",
@@ -138,7 +143,8 @@ skill_categories = {
         "IAM", "OAuth",
         "API security", "CSPM", "container security",
         "DevSecOps", "secrets management",
-        "threat modeling", "incident response"
+        "threat modeling", "incident response",
+        "AI Red Teaming", "LLM Vulnerability Assessment", "Data Anonymization"
     ],
     "Business Intelligence & Strategy": [
         "market research", "competitive analysis", "strategic planning",
@@ -157,7 +163,7 @@ skill_categories = {
     "ERP Systems": [
         "SAP", "Salesforce", "Oracle", "Google sheets",
         "Microsoft Dynamics", "Microsoft 365", "Odoo", "NetSuite", "HubSpot", "Zoho", "Monday CRM",
-        "Pipedrive", "Freshsales"
+        "Pipedrive", "Freshsales", "Salesforce Agentforce","Sap joule"
     ]
 }
 
