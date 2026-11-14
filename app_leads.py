@@ -28,14 +28,13 @@ yesterday = datetime.now() - timedelta(days=1)
 today_date_str = datetime.now().strftime('%Y-%m-%d') # Use today's date for counts
 
 countries = [ 
-    "Hong Kong SAR", "Singapore", "Australia", "Canada", "United States", "Spain", "France", "Germany", "United Kingdom", "Ireland",
-    "Portugal", "Czech Republic", "Lithuania", "Luxembourg", "Switzerland", "Denmark", "Finland", "Sweden", "Norway"
+    "UAE", "Qatar", "Saudi Arabia", "Oman", "Bahrain", "Kuwait", "MENA", "Dubai", "Abu dhabi"
 ]
 
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
 
 # Optional: Add keywords if you want to search by specific terms, or leave empty for all jobs
-keywords_for_scraping = ["RH","HR","Recruiter","Talent Acquisition","Recruitment","Recrutement","People","Human Resources"]  
+keywords_for_scraping = ["Assistant","Assistante", "Clerk"]  
 
 # ==========================================
 # --- STEP 1 — SCRAPE JOB LINKS ---
