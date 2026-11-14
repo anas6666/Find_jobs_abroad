@@ -28,7 +28,10 @@ jobs:
 
       # 4️⃣ Run LinkedIn scraper with secret
       - name: Run Leads scraper
-        run: python Realestate.py
+        run: |
+          python Realestate.py
+          python app_leads.py
+          
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           SPREADSHEET_URL: ${{ secrets.SPREADSHEET_URL }}
