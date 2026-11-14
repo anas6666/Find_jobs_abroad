@@ -34,7 +34,7 @@ countries = [
 excluded_countries = ["United States", "USA", "États-Unis", "India", "Pakistan", "Philippines", "Israel", "Vietnam"]
 
 # Optional: Add keywords if you want to search by specific terms, or leave empty for all jobs
-keywords_for_scraping = ["Assistant","Assistante", "Clerk"]  
+keywords_for_scraping = ["receptionist","Assistant","Assistante", "appointment","booking","customer support","front desk", "Clerk","Barber", "Barbershop"]  
 
 # ==========================================
 # --- STEP 1 — SCRAPE JOB LINKS ---
